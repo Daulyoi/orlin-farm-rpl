@@ -12,6 +12,12 @@
     @if (!session('pelanggan_id'))
     <a href="{{ route('pelanggan.register') }}">Register</a>
     <a href="{{ route('pelanggan.login') }}">Login</a>
+    <a href="{{ route('admin.login') }}">Admin</a>
+    @endif
+
+    @if (session('admin_id'))
+        <p> Hai Admin!</p>
+        <a href="{{ route('admin.dashboard') }}">dashboard admin</a>
     @endif
 
     <br>
@@ -31,6 +37,19 @@
     </form>
     @endif
 
-
+    @if (!$hewanQurbans->isEmpty())
+        <h2>Hewan Qurban</h2>
+        @foreach ($hewanQurbans as $hewanQurban)
+            <br>
+            <div>
+                <h2>{{ $hewanQurban->nama }}</h2>
+                <p>Jenis: {{ $hewanQurban->jenis }}</p>
+                <p>Bobot: {{ $hewanQurban->bobot }}</p>
+                <p>Harga: {{ $hewanQurban->harga }}</p>
+                <p>Status: {{ $hewanQurban->status }}</p>
+                <p>Deskripsi: {{ $hewanQurban->deskripsi }}</p>
+                <p>Lokasi: {{ $hewanQurban->lokasi }}</p>
+        @endforeach
+    @endif
 </body>
 </html>
