@@ -15,13 +15,13 @@ return new class extends Migration
             $table->id();
             $table->string('metode');
             $table->decimal('jumlah', 10, 2);
-            $table->dateTime('tanggal ');
+            $table->dateTime('tanggal');
             $table->binary('bukti');
             $table->string('status');
             $table->unsignedBigInteger('id_pemesanan');
             $table->unsignedBigInteger('id_admin')->nullable();
-            $table->foreign('id_pemesanan')->references('id')->on('pemesanans')->onDelete('set null');
-            $table->foreign('id_admin')->references('id')->on('admins')->onDelete('set null');
+            $table->foreign('id_pemesanan')->references('id')->on('pemesanans')->onDelete('restrict');
+            $table->foreign('id_admin')->references('id')->on('admins')->onDelete('restrict');
             $table->timestamps();
         });
     }
