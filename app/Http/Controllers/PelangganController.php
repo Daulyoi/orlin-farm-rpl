@@ -8,6 +8,10 @@ use Illuminate\Support\Facades\Hash;
 
 class PelangganController extends Controller
 {
+    public function showRegisterForm(){
+        return view('auth.register');
+    }
+
     public function register(Request $request){
         $request->validate([
             'nama' => 'required|string|max:255',
@@ -16,6 +20,7 @@ class PelangganController extends Controller
             'alamat' => 'nullable|string|max:255',
         ]);
 
+
         Pelanggan::create([
             'nama' => $request->nama,
             'email' => $request->email,
@@ -23,6 +28,7 @@ class PelangganController extends Controller
             'alamat' => $request->alamat,
         ]);
 
+        // dd($request->all());
         return redirect()->back()->with('success', 'Pendaftaran berhasil! Silakan login.');
     }
 
@@ -50,18 +56,24 @@ class PelangganController extends Controller
         return redirect()->back()->with('success', 'Profile updated!');
     }
 
+    public function showLoginForm(){
+        return view('auth.login');
+    }
+
     public function login(Request $request){
         $request->validate([
             'email' => 'required|email',
             'password' => 'required|string',
         ]);
 
+
         $pelanggan = Pelanggan::where('email', $request->email)->first();
+        // dd($pelanggan->all());
 
 
         if ($pelanggan && Hash::check($request->password, $pelanggan->password)) {
             session(['pelanggan_id' => $pelanggan->id]);
-            return redirect()->route('dashboard')->with('success', 'Logged in successfully.');
+            return redirect()->route('home')->with('success', 'Logged in successfully.');
         }
 
         return back()->withErrors(['email' => 'Invalid credentials.']);
@@ -70,7 +82,7 @@ class PelangganController extends Controller
     public function logout(Request $request)
     {
         $request->session()->forget('pelanggan_id');
-        return redirect()->route('login.form')->with('success', 'Logged out.');
+        return redirect()->route('home')->with('success', 'Logged out.');
     }
 
 

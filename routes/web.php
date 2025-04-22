@@ -7,16 +7,16 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/home', function () {
+    return view('home');
+})->name('home');
+
 // Register
-Route::get('/register', [PelangganController::class, 'register'])->name('pelanggan.register');
-Route::put('/profile/{id}/edit', [PelangganController::class, 'updateProfile'])->name('pelanggan.updateProfile');
+Route::get('/register', [PelangganController::class, 'showRegisterForm'])->name('pelanggan.register');
+Route::post('/register', [PelangganController::class, 'register']);
+// Route::put('/profile/{id}/edit', [PelangganController::class, 'updateProfile'])->name('pelanggan.updateProfile');
 
 // Auth
-Route::get('/login', fn() => view('auth.login'))->name('login.form');
-Route::post('/login', [PelangganController::class, 'login'])->name('pelanggan.login');
+Route::get('/login', [PelangganController::class, 'showLoginForm'])->name('pelanggan.login');
+Route::post('/login', [PelangganController::class, 'login']);
 Route::post('/logout', [PelangganController::class, 'logout'])->name('pelanggan.logout');
-
-Route::get('/dashboard', function () {
-    if (!session('pelanggan_id')) return redirect()->route('login.form');
-    return view('dashboard');
-})->name('dashboard');

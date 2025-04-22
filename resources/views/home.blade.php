@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Home</h1>
+
+    @if (!session('pelanggan_id'))
+    <a href="{{ route('pelanggan.register') }}">Register</a>
+    <a href="{{ route('pelanggan.login') }}">Login</a>
+    @endif
+
+    <br>
+
+    @if (session('success'))
+        <div style="color: green;">
+            {{ session('success') }}
+        </div>
+
+    @endif
+
+    @if (currentPelanggan())
+    <h2>hai {{ currentPelanggan()->nama }}</h2>
+    <form action="{{ route('pelanggan.logout') }}" method="POST">
+        @csrf
+        <button type="submit">Logout</button>
+    </form>
+    @endif
+
+
+</body>
+</html>
