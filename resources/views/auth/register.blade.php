@@ -7,13 +7,16 @@
     <title>Document</title>
 </head>
 <body>
-    <form action="{{ route('pelanggan.login') }}" method="POST">
+    <form action="{{ route('pelanggan.register') }}" method="POST">
         @csrf
+        <input type="text" name="nama" placeholder="Username" required>
         <input type="email" name="email" placeholder="Email" required>
         <input type="password" name="password" placeholder="Password" required>
-        <button type="submit">Login</button>
+        <input type="password" name="password_confirmation" placeholder="Confirm Password" required>
+        <input type="text" name="alamat" placeholder="alamat">
+        <button type="submit">Register</button>
     </form>
-    <a href="{{ route('pelanggan.register') }}">ke laman register</a>
+    <a href="{{ route('pelanggan.login') }}">ke laman login</a>
 </body>
 </html>
 
