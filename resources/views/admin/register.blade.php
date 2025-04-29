@@ -10,7 +10,7 @@
     <h1>Register Admin</h1>
     <form action="{{ route('admin.register') }}" method="POST">
         @csrf
-        <input type="text" name="nama" placeholder="Username" required>
+        <input type="text" name="nama" placeholder="Nama" required>
         <input type="email" name="email" placeholder="Email" required>
         <input type="password" name="password" placeholder="Password" required>
         <input type="password" name="password_confirmation" placeholder="Confirm Password" required>

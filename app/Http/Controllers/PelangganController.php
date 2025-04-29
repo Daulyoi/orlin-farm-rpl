@@ -39,7 +39,7 @@ class PelangganController extends Controller
         $request->validate([
             'nama' => 'required|string|max:255',
             'email' => 'required|email|unique:pelanggans,email,' . $pelanggan->id,
-            'password' => 'nullable|string|min:6|confirmed',
+            'password' => 'nullable|string|min:8|confirmed',
             'alamat' => 'nullable|string',
         ]);
 
@@ -69,7 +69,6 @@ class PelangganController extends Controller
 
         $pelanggan = Pelanggan::where('email', $request->email)->first();
         // dd($pelanggan->all());
-
 
         if ($pelanggan && Hash::check($request->password, $pelanggan->password)) {
             session(['pelanggan_id' => $pelanggan->id]);

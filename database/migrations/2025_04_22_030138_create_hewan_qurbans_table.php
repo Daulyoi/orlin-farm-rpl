@@ -16,11 +16,11 @@ return new class extends Migration
             $table->string('jenis');
             $table->decimal('bobot', 5, 2);
             $table->decimal('harga', 10, 2);
-            $table->string('status');
+            $table->string('tersedia')->default('tersedia');
             $table->string('kelamin');
             $table->text('deskripsi');
             $table->text('lokasi');
-            $table->binary('foto');
+            $table->string('foto');
             $table->timestamps();
         });
     }

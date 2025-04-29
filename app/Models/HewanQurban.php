@@ -10,7 +10,7 @@ class HewanQurban extends Model
             'jenis',
             'bobot',
             'harga',
-            'status',
+            'tersedia',
             'kelamin',
             'deskripsi',
             'lokasi',

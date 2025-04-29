@@ -18,6 +18,7 @@
     @if (session('admin_id'))
         <p> Hai Admin!</p>
         <a href="{{ route('admin.dashboard') }}">dashboard admin</a>
+        <a href="{{ route('admin.logout') }}">Logout</a>
     @endif
 
     <br>

@@ -16,7 +16,7 @@ Route::get('/register', [PelangganController::class, 'showRegisterForm'])->name(
 Route::post('/register', [PelangganController::class, 'register']);
 // Route::put('/profile/{id}/edit', [PelangganController::class, 'updateProfile'])->name('pelanggan.updateProfile');
 
-// Auth
+// Auth Pelanggan
 Route::get('/login', [PelangganController::class, 'showLoginForm'])->name('pelanggan.login');
 Route::post('/login', [PelangganController::class, 'login']);
 Route::post('/logout', [PelangganController::class, 'logout'])->name('pelanggan.logout');
@@ -26,6 +26,7 @@ Route::post('/logout', [PelangganController::class, 'logout'])->name('pelanggan.
 Route::get('/admin', [AdminController::class, 'showLoginForm'])->name('admin.login');
 Route::get('/admin/login', [AdminController::class, 'showLoginForm'])->name('admin.login');
 Route::post('/admin/login', [AdminController::class, 'login'])->name('admin.login');
+Route::get('/admin/logout', [AdminController::class, 'logout'])->name('admin.logout');
 Route::get('/admin/register', [AdminController::class, 'showRegisterForm'])->name('admin.register');
 Route::post('/admin/register', [AdminController::class, 'register'])->name('admin.register');
 Route::get('/admin/dashboard', [AdminController::class, 'showDashboard'])->name('admin.dashboard');
