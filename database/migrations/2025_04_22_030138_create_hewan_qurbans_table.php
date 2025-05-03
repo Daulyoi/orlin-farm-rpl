@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('jenis');
             $table->decimal('bobot', 5, 2);
             $table->decimal('harga', 10, 2);
-            $table->string('tersedia')->default('tersedia');
+            $table->string('tersedia')->default('tersedia'); # tersedia, tidak
             $table->string('kelamin');
             $table->text('deskripsi');
             $table->text('lokasi');

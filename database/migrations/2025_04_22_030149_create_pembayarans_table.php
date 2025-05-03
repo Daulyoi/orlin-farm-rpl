@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('metode');
             $table->decimal('jumlah', 10, 2);
             $table->dateTime('tanggal');
-            $table->binary('bukti');
-            $table->string('status');
+            $table->string('bukti');
+            $table->string('status'); # waiting, accepted, rejected
             $table->unsignedBigInteger('id_pemesanan');
             $table->unsignedBigInteger('id_admin')->nullable();
             $table->foreign('id_pemesanan')->references('id')->on('pemesanans')->onDelete('restrict');

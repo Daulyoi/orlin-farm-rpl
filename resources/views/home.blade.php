@@ -32,6 +32,9 @@
 
     @if (currentPelanggan())
     <h2>hai {{ currentPelanggan()->nama }}</h2>
+    <a href="{{ route('pelanggan.keranjang') }}">Keranjang</a>
+    <a href="{{ route('pelanggan.pemesanan') }}">Pemesanan</a>
+    <a href="{{ route('pelanggan.pembayaran') }}">Pembayaran</a>
     <form action="{{ route('pelanggan.logout') }}" method="POST">
         @csrf
         <button type="submit">Logout</button>
@@ -50,6 +53,11 @@
                 <p>Status: {{ $hewanQurban->status }}</p>
                 <p>Deskripsi: {{ $hewanQurban->deskripsi }}</p>
                 <p>Lokasi: {{ $hewanQurban->lokasi }}</p>
+                <form method="POST" action="{{ route('pelanggan.keranjang.add') }}">
+                    @csrf
+                    <input type="hidden" name="id_hewan" value="{{ $hewanQurban->id }}">
+                    <button type="submit">Tambahin ke Keranjang</button>
+                </form>
         @endforeach
     @endif
 </body>

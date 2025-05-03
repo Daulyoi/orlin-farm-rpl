@@ -3,8 +3,30 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Pemesanan extends Model
 {
-    //
+    protected $fillable = [
+        'tanggal',
+        'status',
+        'id_pelanggan',
+    ];
+
+    public function pelanggan(): BelongsTo
+    {
+        return $this->belongsTo(Pelanggan::class, 'id_pelanggan');
+    }
+
+    public function itemPemesanans(): HasMany
+    {
+        return $this->hasMany(ItemPemesanan::class, 'id_pemesanan');
+    }
+
+    public function pembayaran(): HasOne
+    {
+        return $this->hasOne(Pembayaran::class, 'id_pemesanan');
+    }
 }
