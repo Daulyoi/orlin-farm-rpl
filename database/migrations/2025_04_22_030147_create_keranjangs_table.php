@@ -15,11 +15,14 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('id_pelanggan');
             $table->unsignedBigInteger('id_hewan');
+
             $table->foreign('id_pelanggan')->references('id')->on('pelanggans')->onDelete('cascade');
             $table->foreign('id_hewan')->references('id')->on('hewan_qurbans')->onDelete('cascade');
+
             $table->timestamps();
         });
     }
+
 
     /**
      * Reverse the migrations.

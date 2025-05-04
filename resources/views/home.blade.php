@@ -50,7 +50,7 @@
                 <p>Jenis: {{ $hewanQurban->jenis }}</p>
                 <p>Bobot: {{ $hewanQurban->bobot }}</p>
                 <p>Harga: {{ $hewanQurban->harga }}</p>
-                <p>Status: {{ $hewanQurban->status }}</p>
+                <p>Tersedia: {{ $hewanQurban->tersedia }}</p>
                 <p>Deskripsi: {{ $hewanQurban->deskripsi }}</p>
                 <p>Lokasi: {{ $hewanQurban->lokasi }}</p>
                 <form method="POST" action="{{ route('pelanggan.keranjang.add') }}">
