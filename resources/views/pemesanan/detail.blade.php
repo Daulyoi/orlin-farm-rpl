@@ -2,7 +2,7 @@
 <h1>Detail Pemesanan #{{ $pemesanan->id }}</h1>
 
 <p>Status: {{ $pemesanan->status }}</p>
-<p>Total: Rp{{ number_format($jumlah) }}</p>
+<p>Total: Rp{{ number_format($pemesanan->jumlah) }}</p>
 
 <h3>Daftar Hewan</h3>
 <ul>

@@ -7,10 +7,35 @@ use Illuminate\Http\Request;
 
 class HewanQurbanController extends Controller
 {
-    public function showAll(){
-        $hewanQurbans = HewanQurban::all();
+    public function showAll(Request $request)
+    {
+        $sortBy = $request->input('sort_by', 'created_at');
+        $sortOrder = $request->input('sort_order', 'desc');
+    
+        $query = HewanQurban::query();
+    
+        $query->where('tersedia', 'tersedia');
+    
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('jenis', 'like', '%' . $search . '%')
+                  ->orWhere('lokasi', 'like', '%' . $search . '%')
+                  ->orWhere('deskripsi', 'like', '%' . $search . '%');
+            });
+        }
+    
+        if ($request->filled('kelamin')) {
+            $query->where('kelamin', $request->input('kelamin'));
+        }
+    
+        $query->orderBy($sortBy, $sortOrder);
+    
+        $hewanQurbans = $query->paginate(10);
+    
         return view('home', ['hewanQurbans' => $hewanQurbans]);
     }
+    
 
     public function showOne($id){
         $hewanQurban = HewanQurban::find($id);

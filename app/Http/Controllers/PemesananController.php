@@ -11,31 +11,69 @@ use App\Models\Keranjang;
 
 class PemesananController extends Controller
 {
-    public function showAll()
+    public function showAll(Request $request)
     {
-        $pemesanans = Pemesanan::with('pelanggan', 'itemPemesanans.hewanQurban', 'pembayaran')->get();
-        return view('admin.pemesanan', ['pemesanans'=> $pemesanans]);
-    }
+        $sortBy = $request->input('sort_by', 'created_at');
+        $sortOrder = $request->input('sort_order', 'desc');
+        
+        $query = Pemesanan::with('pelanggan', 'itemPemesanans.hewanQurban', 'pembayaran');
     
-    // DONE
-    public function showMine()
+        if ($request->filled('status')) {
+            $query->where('status', $request->input('status'));
+        }
+    
+        if ($request->filled('pelanggan_nama')) {
+            $query->whereHas('pelanggan', function ($q) use ($request) {
+                $q->where('nama', 'like', '%' . $request->input('pelanggan_nama') . '%');
+            });
+        }
+    
+        if ($request->filled('date_from')) {
+            $query->whereDate('created_at', '>=', $request->input('date_from'));
+        }
+    
+        if ($request->filled('date_to')) {
+            $query->whereDate('created_at', '<=', $request->input('date_to'));
+        }
+    
+        $pemesanans = $query->orderBy($sortBy, $sortOrder)->paginate(10);
+    
+        return view('admin.pemesanan', ['pemesanans' => $pemesanans]);
+    }    
+    
+    public function showMine(Request $request)
     {
         $pelanggan_id = session('pelanggan_id');
-        $pemesanans = Pemesanan::where('id_pelanggan', $pelanggan_id)->with('itemPemesanans.hewanQurban')->get();
-        return view('pemesanan.index', ['pemesanans'=> $pemesanans]);
+    
+        $sortBy = $request->input('sort_by', 'created_at');
+        $sortOrder = $request->input('sort_order', 'desc');
+    
+        $query = Pemesanan::where('id_pelanggan', $pelanggan_id)
+            ->with('itemPemesanans.hewanQurban');
+    
+        if ($request->filled('status')) {
+            $query->where('status', $request->input('status'));
+        }
+    
+        if ($request->filled('date_from')) {
+            $query->whereDate('created_at', '>=', $request->input('date_from'));
+        }
+    
+        if ($request->filled('date_to')) {
+            $query->whereDate('created_at', '<=', $request->input('date_to'));
+        }
+    
+        $pemesanans = $query->orderBy($sortBy, $sortOrder)->paginate(10);
+    
+        return view('pemesanan.index', ['pemesanans' => $pemesanans]);
     }
+    
     
     public function show(string $pemesanan_id)
     {
         $pemesanan = Pemesanan::findOrFail($pemesanan_id);
-        $jumlah = 0;
-        foreach($pemesanan->itemPemesanans as $item) {
-            $hargaHewan = $item->hewanQurban->harga;
-            $jumlah += $hargaHewan;
-        }
         return view('pemesanan.detail', [
-            'pemesanan'=> $pemesanan,
-            'jumlah' => $jumlah
+            'pemesanan'=> $pemesanan
         ]);
     }
     
@@ -44,40 +82,44 @@ class PemesananController extends Controller
         try 
         {
             DB::beginTransaction();
-
+    
             $pelanggan_id = session('pelanggan_id');
-            $keranjangItems = Keranjang::where('id_pelanggan', $pelanggan_id)->get();
-
-            if ($keranjangItems->isEmpty()) {
+            $keranjang_items = Keranjang::where('id_pelanggan', $pelanggan_id)->get();
+    
+            if ($keranjang_items->isEmpty()) {
                 DB::rollBack();
                 return redirect()->back()->with('error', 'Pemesanan gagal dibuat.');
             }
-            
-            foreach ($keranjangItems as $keranjangItem) {
-                if ($keranjangItem->hewanQurban->tersedia == 'tidak') {
+
+            $jumlah_harga = 0;
+            foreach ($keranjang_items as $keranjang_item) {
+                if ($keranjang_item->hewanQurban->tersedia == 'tidak') {
                     DB::rollBack();
                     return redirect()->back()->with('error', 'Pemesanan gagal dibuat.');
                 }
+                $jumlah_harga += $keranjang_item->hewanQurban->harga;
             }
-
+    
             $pemesanan = Pemesanan::create([
                 'id_pelanggan' => $pelanggan_id,
                 'tanggal' => now(),
                 'status' => 'pending',
+                'jumlah' => $jumlah_harga,
             ]);
-            
-            foreach ($keranjangItems as $keranjangItem) {
-                $keranjangItem->hewanQurban->update(['tersedia' => 'tidak']);
+    
+            foreach ($keranjang_items as $keranjang_item) {
+                $keranjang_item->hewanQurban->update(['tersedia' => 'tidak']);
+    
                 ItemPemesanan::create([
                     'id_pemesanan' => $pemesanan->id,
-                    'id_hewan' => $keranjangItem->id_hewan,
+                    'id_hewan' => $keranjang_item->id_hewan,
                 ]);
             }
-            
+    
             Keranjang::where('id_pelanggan', $pelanggan_id)->delete();
-            
+    
             DB::commit();
-            
+    
             return redirect()->route('pelanggan.pemesanan')->with('success', 'Pemesanan berhasil dibuat.');
         } 
         catch (\Illuminate\Validation\ValidationException $e) 
@@ -90,7 +132,7 @@ class PemesananController extends Controller
             DB::rollBack();
             return response()->json(['message' => 'Gagal membuat pemesanan.', 'error' => $e->getMessage()], 500);
         }
-    }
+    }    
 
     // WIP
     public function updateStatusByAdmin(Request $request, string $pemesanan_id)
