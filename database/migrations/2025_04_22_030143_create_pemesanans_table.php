@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('status'); # pending, processing, completed, cancelled
             $table->unsignedBigInteger('id_pelanggan');
             $table->foreign('id_pelanggan')->references('id')->on('pelanggans');
+            $table->decimal('jumlah', 10, 2);
             $table->timestamps();
         });
     }

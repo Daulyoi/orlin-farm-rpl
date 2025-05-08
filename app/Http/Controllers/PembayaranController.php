@@ -12,24 +12,69 @@ use App\Models\Hewan;
 
 class PembayaranController extends Controller
 {
-    public function showAll()
+    public function showAll(Request $request)
     {
-        $pemesanans = Pemesanan::with('itemPemesanans.hewanQurban')->get();
+        $sortBy = $request->input('sort_by', 'created_at');
+        $sortOrder = $request->input('sort_order', 'desc');
+    
+        $query = Pembayaran::with('pemesanan.pelanggan', 'pemesanan.itemPemesanans.hewanQurban');
+    
+        if ($request->filled('status')) {
+            $query->where('status', $request->input('status'));
+        }
+    
+        if ($request->filled('pelanggan_nama')) {
+            $query->whereHas('pemesanan.pelanggan', function ($q) use ($request) {
+                $q->where('nama', 'like', '%' . $request->input('pelanggan_nama') . '%');
+            });
+        }
+    
+        if ($request->filled('date_from')) {
+            $query->whereDate('created_at', '>=', $request->input('date_from'));
+        }
+    
+        if ($request->filled('date_to')) {
+            $query->whereDate('created_at', '<=', $request->input('date_to'));
+        }
+    
+        $pembayarans = $query->orderBy($sortBy, $sortOrder)->paginate(10);
+    
         return view('admin.pembayaran', [
-            'pemesanans'=> $pemesanans
+            'pembayarans' => $pembayarans
         ]);
     }
     
-    public function showMine()
+    public function showMine(Request $request)
     {
         $pelanggan_id = session('pelanggan_id');
-        $pemesanans = Pemesanan::where('id_pelanggan', $pelanggan_id)->get();
-        $pembayarans = $pemesanans->pluck('pembayaran')->filter();
+    
+        $sortBy = $request->input('sort_by', 'created_at');
+        $sortOrder = $request->input('sort_order', 'desc');
+    
+        $query = Pembayaran::whereHas('pemesanan', function ($q) use ($pelanggan_id) {
+            $q->where('id_pelanggan', $pelanggan_id);
+        })->with('pemesanan');
+    
+        if ($request->filled('status')) {
+            $query->where('status', $request->input('status'));
+        }
+    
+        if ($request->filled('date_from')) {
+            $query->whereDate('created_at', '>=', $request->input('date_from'));
+        }
+    
+        if ($request->filled('date_to')) {
+            $query->whereDate('created_at', '<=', $request->input('date_to'));
+        }
+    
+        $pembayarans = $query->orderBy($sortBy, $sortOrder)->paginate(10);
+    
         return view('pembayaran.index', [
-            'pembayarans'=> $pembayarans
+            'pembayarans' => $pembayarans
         ]);
     }
-
+    
+    
     public function show(string $pembayaran_id)
     {
         $pembayaran = Pembayaran::findOrFail($pembayaran_id);

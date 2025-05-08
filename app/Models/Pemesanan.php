@@ -13,6 +13,7 @@ class Pemesanan extends Model
         'tanggal',
         'status',
         'id_pelanggan',
+        'jumlah'
     ];
 
     public function pelanggan(): BelongsTo

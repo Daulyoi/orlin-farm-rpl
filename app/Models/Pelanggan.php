@@ -11,6 +11,7 @@ class Pelanggan extends Model
         'email',
         'password',
         'alamat',
+        'no_telp'
     ];
 
     protected $hidden = [
