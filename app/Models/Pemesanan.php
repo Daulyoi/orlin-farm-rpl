@@ -12,7 +12,7 @@ class Pemesanan extends Model
     protected $fillable = [
         'tanggal',
         'expired_at',
-        'status',
+        'status', # pending, processing, completed, cancelled
         'id_pelanggan',
         'jumlah'
     ];
