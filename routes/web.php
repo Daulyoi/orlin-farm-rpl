@@ -8,9 +8,8 @@ use App\Http\Controllers\KeranjangController;
 use App\Http\Controllers\PemesananController;
 use App\Http\Controllers\PembayaranController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [HewanQurbanController::class, 'showAll'])->name('home');
+
 Route::get('/test-session', function () {
     session(['pelanggan_id' => 12345]); // Manually set session
     dd(session('pelanggan_id')); // This should output 12345
@@ -33,7 +32,7 @@ Route::post('/logout', [PelangganController::class, 'logout'])->name('pelanggan.
 Route::get('/admin', [AdminController::class, 'showLoginForm'])->name('admin.login');
 Route::get('/admin/login', [AdminController::class, 'showLoginForm'])->name('admin.login');
 Route::post('/admin/login', [AdminController::class, 'login'])->name('admin.login');
-Route::get('/admin/logout', [AdminController::class, 'logout'])->name('admin.logout');
+Route::post('/admin/logout', [AdminController::class, 'logout'])->name('admin.logout');
 Route::get('/admin/register', [AdminController::class, 'showRegisterForm'])->name('admin.register');
 Route::post('/admin/register', [AdminController::class, 'register'])->name('admin.register');
 Route::get('/admin/dashboard', [AdminController::class, 'showDashboard'])->name('admin.dashboard');
