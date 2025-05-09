@@ -11,6 +11,7 @@ class Pemesanan extends Model
 {
     protected $fillable = [
         'tanggal',
+        'expired_at',
         'status',
         'id_pelanggan',
         'jumlah'

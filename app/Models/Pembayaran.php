@@ -18,7 +18,7 @@ class Pembayaran extends Model
         'id_pemesanan',
         'id_admin',
     ];
-    public function pemesanan(): BelongsTo 
+    public function pemesanan(): BelongsTo
     {
         return $this->belongsTo(Pemesanan::class, 'id_pemesanan');
     }

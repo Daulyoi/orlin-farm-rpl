@@ -70,7 +70,7 @@ class PelangganController extends Controller
 
 
         if (Auth::guard('pelanggan')->attempt(['email' => $request->email, 'password' => $request->password], $request->get('remember'))) {
-            return redirect()->intended('home')->with('success', 'Logged in successfully.');
+            return redirect()->route('home')->with('success', 'Logged in successfully.');
         }
     }
 

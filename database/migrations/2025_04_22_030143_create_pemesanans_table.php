@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('pemesanans', function (Blueprint $table) {
             $table->id();
             $table->dateTime('tanggal');
+            $table->timestamp('expired_at')->nullable();
             $table->string('status'); # pending, processing, completed, cancelled
             $table->unsignedBigInteger('id_pelanggan');
             $table->foreign('id_pelanggan')->references('id')->on('pelanggans');
