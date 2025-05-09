@@ -7,10 +7,10 @@ use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\KeranjangController;
 use App\Http\Controllers\PemesananController;
 use App\Http\Controllers\PembayaranController;
+use App\Http\Middleware\IsAdmin;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [HewanQurbanController::class, 'showAll'])->name('home');
+
 Route::get('/test-session', function () {
     session(['pelanggan_id' => 12345]); // Manually set session
     dd(session('pelanggan_id')); // This should output 12345
@@ -33,10 +33,11 @@ Route::post('/logout', [PelangganController::class, 'logout'])->name('pelanggan.
 Route::get('/admin', [AdminController::class, 'showLoginForm'])->name('admin.login');
 Route::get('/admin/login', [AdminController::class, 'showLoginForm'])->name('admin.login');
 Route::post('/admin/login', [AdminController::class, 'login'])->name('admin.login');
-Route::get('/admin/logout', [AdminController::class, 'logout'])->name('admin.logout');
-Route::get('/admin/register', [AdminController::class, 'showRegisterForm'])->name('admin.register');
-Route::post('/admin/register', [AdminController::class, 'register'])->name('admin.register');
-Route::get('/admin/dashboard', [AdminController::class, 'showDashboard'])->name('admin.dashboard');
+Route::post('/admin/logout', [AdminController::class, 'logout'])->name('admin.logout')->middleware([IsAdmin::class]);
+Route::get('/admin/register', [AdminController::class, 'showRegisterForm'])->name('admin.register')->middleware([IsAdmin::class]);
+Route::post('/admin/register', [AdminController::class, 'register'])->name('admin.register')->middleware([IsAdmin::class]);
+Route::get('/admin/dashboard', [AdminController::class, 'showDashboard'])->name('admin.dashboard')->middleware([IsAdmin::class]);
+
 
 // Pemesanan
 Route::get('/pemesanan', [PemesananController::class, 'showMine'])->name('pelanggan.pemesanan');
@@ -50,7 +51,7 @@ Route::post('/keranjang/add', [KeranjangController::class, 'add'])->name('pelang
 Route::delete('/keranjang/delete/{keranjang_id}', [KeranjangController::class, 'delete'])->name('pelanggan.keranjang.delete');
 
 // Pembayaran
-Route::get('admin/pembayaran', [PembayaranController::class, 'showAll'])->name('admin.pembayaran');
+Route::get('admin/pembayaran', [PembayaranController::class, 'showAll'])->name('admin.pembayaran')->middleware([IsAdmin::class]);
 Route::get('/pembayaran', [PembayaranController::class, 'showMine'])->name('pelanggan.pembayaran');
 Route::get('/pembayaran/{id_pembayaran}', [PembayaranController::class, 'show'])->name('pelanggan.pembayaran.detail');
 Route::post('/pembayaran/create', [PembayaranController::class, 'create'])->name('pelanggan.pembayaran.create');

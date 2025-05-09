@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Admin;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
@@ -18,16 +19,12 @@ class AdminController extends Controller
             'email' => 'required|string|email|max:255|unique:admins',
             'password' => 'required|string|min:8|confirmed',
         ]);
-
-
-        Admin::create([
+        $admin = Admin::create([
             'nama' => $request->nama,
             'email' => $request->email,
-            'password' => bcrypt($request->password),
+            'password' => Hash::make($request->password),
         ]);
-
-        // dd($request->all());
-        return redirect()->back()->with('success', 'Pendaftaran berhasil! Silakan login.');
+        return redirect()->intended('admin/login')->with('success', 'Registration successful! Please login.');
     }
 
     public function updateProfile(Request $request, $id)
@@ -63,22 +60,18 @@ class AdminController extends Controller
         ]);
 
 
-        $admin = admin::where('email', $request->email)->first();
-        // dd($admin->all());
-
-
-        if ($admin && Hash::check($request->password, $admin->password)) {
-            session(['admin_id' => $admin->id]);
-            return redirect()->route('home')->with('success', 'Logged in successfully.');
+        if(Auth::guard('admin')->attempt(['email' => $request->email, 'password' => $request->password], $request->get('remember'))){
+            return redirect()->intended('admin/dashboard')->with('success', 'Logged in successfully.');
         }
-
-        return back()->withErrors(['email' => 'Invalid credentials.']);
     }
 
     public function logout(Request $request)
     {
-        $request->session()->forget('admin_id');
-        return redirect()->route('home')->with('success', 'Logged out.');
+        Auth::guard('admin')->logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect('/admin/login')->with('success', 'Logged out successfully.');
     }
 
     public function showDashboard()
