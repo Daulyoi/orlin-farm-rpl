@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('pembayarans', function (Blueprint $table) {
             $table->id();
-            $table->string('metode');
+            $table->string('metode'); # qris, transfer
             $table->decimal('jumlah', 10, 2);
             $table->dateTime('tanggal');
             $table->string('bukti');

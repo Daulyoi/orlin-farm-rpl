@@ -9,6 +9,7 @@ class HewanQurbanController extends Controller
 {
     public function showAll(Request $request)
     {
+        trackVisit();
         $sortBy = $request->input('sort_by', 'created_at');
         $sortOrder = $request->input('sort_order', 'desc');
     
@@ -38,6 +39,7 @@ class HewanQurbanController extends Controller
     
 
     public function showOne($id){
+        trackVisit();
         $hewanQurban = HewanQurban::find($id);
         return view('hewanQurban.detail', ['hewanQurban' => $hewanQurban]);
     }
