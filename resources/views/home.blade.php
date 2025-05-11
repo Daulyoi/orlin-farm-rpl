@@ -8,10 +8,10 @@
 <body>
     <h1>Home</h1>
 
-    @if (!session('pelanggan_id'))
+    @if (!currentPelanggan())
         <a href="{{ route('pelanggan.register') }}">Register</a>
         <a href="{{ route('pelanggan.login') }}">Login</a>
-        <a href="{{ route('admin.login') }}">Admin</a>
+        <a href="{{ route('filament.admin.auth.login') }}">Admin</a>
     @endif
 
     @if (session('admin_id'))

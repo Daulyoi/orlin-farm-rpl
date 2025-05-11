@@ -30,13 +30,13 @@ Route::post('/logout', [PelangganController::class, 'logout'])->name('pelanggan.
 
 // Admin
 // Perlu diubah biar register nggak bisa di akses
-Route::get('/admin', [AdminController::class, 'showLoginForm'])->name('admin.login');
-Route::get('/admin/login', [AdminController::class, 'showLoginForm'])->name('admin.login');
-Route::post('/admin/login', [AdminController::class, 'login'])->name('admin.login');
-Route::post('/admin/logout', [AdminController::class, 'logout'])->name('admin.logout')->middleware([IsAdmin::class]);
-Route::get('/admin/register', [AdminController::class, 'showRegisterForm'])->name('admin.register')->middleware([IsAdmin::class]);
-Route::post('/admin/register', [AdminController::class, 'register'])->name('admin.register')->middleware([IsAdmin::class]);
-Route::get('/admin/dashboard', [AdminController::class, 'showDashboard'])->name('admin.dashboard')->middleware([IsAdmin::class]);
+// Route::get('/admin', [AdminController::class, 'showLoginForm'])->name('admin.login');
+// Route::get('/admin/login', [AdminController::class, 'showLoginForm'])->name('admin.login');
+// Route::post('/admin/login', [AdminController::class, 'login'])->name('admin.login');
+// Route::post('/admin/logout', [AdminController::class, 'logout'])->name('admin.logout')->middleware([IsAdmin::class]);
+// Route::get('/admin/register', [AdminController::class, 'showRegisterForm'])->name('admin.register')->middleware([IsAdmin::class]);
+// Route::post('/admin/register', [AdminController::class, 'register'])->name('admin.register')->middleware([IsAdmin::class]);
+// Route::get('/admin/dashboard', [AdminController::class, 'showDashboard'])->name('admin.dashboard')->middleware([IsAdmin::class]);
 
 
 // Pemesanan

@@ -43,7 +43,8 @@ class PemesananController extends Controller
     
     public function showMine(Request $request)
     {
-        $pelanggan_id = session('pelanggan_id');
+        trackVisit();
+        $pelanggan_id = currentPelanggan()->id;
     
         $sortBy = $request->input('sort_by', 'created_at');
         $sortOrder = $request->input('sort_order', 'desc');
@@ -83,7 +84,7 @@ class PemesananController extends Controller
         {
             DB::beginTransaction();
     
-            $pelanggan_id = session('pelanggan_id');
+            $pelanggan_id = currentPelanggan()->id;
             $keranjang_items = Keranjang::where('id_pelanggan', $pelanggan_id)->get();
     
             if ($keranjang_items->isEmpty()) {

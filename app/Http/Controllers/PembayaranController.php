@@ -46,6 +46,7 @@ class PembayaranController extends Controller
     
     public function showMine(Request $request)
     {
+        trackVisit();
         $pelanggan_id = session('pelanggan_id');
     
         $sortBy = $request->input('sort_by', 'created_at');
@@ -78,7 +79,8 @@ class PembayaranController extends Controller
     public function show(string $pembayaran_id)
     {
         $pembayaran = Pembayaran::findOrFail($pembayaran_id);
-        if ($pembayaran->pemesanan->id_pelanggan != session('pelanggan_id')){
+        $pelanggan_id = currentPelanggan()->id;
+        if ($pembayaran->pemesanan->id_pelanggan != $pelanggan_id){
             return redirect()->back();
         }
         return view('pembayaran.detail', [
@@ -96,7 +98,7 @@ class PembayaranController extends Controller
                 'metode' => 'required|in:qris,transfer',
                 'bukti' => 'required|image|mimes:jpeg,png,jpg,gif|max:5120'
             ]);
-            $pelanggan_id = session('pelanggan_id');
+            $pelanggan_id = currentPelanggan()->id;
             $pemesanan = Pemesanan::findOrFail($validatedData['id_pemesanan']);
             if ($pemesanan->pelanggan->id != $pelanggan_id) {
                 return redirect()->back()->with('error', 'Pembayaran gagal dibuat');
