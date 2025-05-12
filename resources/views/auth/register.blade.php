@@ -14,6 +14,7 @@
         <input type="password" name="password" placeholder="Password" required>
         <input type="password" name="password_confirmation" placeholder="Confirm Password" required>
         <input type="text" name="alamat" placeholder="alamat">
+        <input type="text" name="no_telp" placeholder="no telp">
         <button type="submit">Register</button>
     </form>
     <a href="{{ route('pelanggan.login') }}">ke laman login</a>

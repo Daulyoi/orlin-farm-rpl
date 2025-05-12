@@ -13,7 +13,8 @@ class Pemesanan extends Model
     use HasFactory;
     protected $fillable = [
         'tanggal',
-        'status',
+        'expired_at',
+        'status', # pending, processing, completed, cancelled
         'id_pelanggan',
         'jumlah'
     ];

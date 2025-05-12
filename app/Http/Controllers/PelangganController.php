@@ -29,7 +29,7 @@ class PelangganController extends Controller
             'alamat' => $request->alamat,
             'no_telp' => $request->no_telp,
         ]);
-        return redirect()->intended('admin/login')->with('success', 'Registration successful! Please login.');
+        return redirect()->intended('/')->with('success', 'Registration successful! Please login.');
     }
 
     public function updateProfile(Request $request, $id)
@@ -70,7 +70,7 @@ class PelangganController extends Controller
 
 
         if (Auth::guard('pelanggan')->attempt(['email' => $request->email, 'password' => $request->password], $request->get('remember'))) {
-            return redirect()->intended('home')->with('success', 'Logged in successfully.');
+            return redirect()->route('home')->with('success', 'Logged in successfully.');
         }
     }
 

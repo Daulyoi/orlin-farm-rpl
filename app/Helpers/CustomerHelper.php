@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Pelanggan;
+use Illuminate\Support\Facades\Auth;
 
 if(!function_exists('currentPelanggan')){
     function currentPelanggan(){

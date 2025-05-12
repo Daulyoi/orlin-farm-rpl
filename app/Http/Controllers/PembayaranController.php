@@ -16,66 +16,66 @@ class PembayaranController extends Controller
     {
         $sortBy = $request->input('sort_by', 'created_at');
         $sortOrder = $request->input('sort_order', 'desc');
-    
+
         $query = Pembayaran::with('pemesanan.pelanggan', 'pemesanan.itemPemesanans.hewanQurban');
-    
+
         if ($request->filled('status')) {
             $query->where('status', $request->input('status'));
         }
-    
+
         if ($request->filled('pelanggan_nama')) {
             $query->whereHas('pemesanan.pelanggan', function ($q) use ($request) {
                 $q->where('nama', 'like', '%' . $request->input('pelanggan_nama') . '%');
             });
         }
-    
+
         if ($request->filled('date_from')) {
             $query->whereDate('created_at', '>=', $request->input('date_from'));
         }
-    
+
         if ($request->filled('date_to')) {
             $query->whereDate('created_at', '<=', $request->input('date_to'));
         }
-    
+
         $pembayarans = $query->orderBy($sortBy, $sortOrder)->paginate(10);
-    
+
         return view('admin.pembayaran', [
             'pembayarans' => $pembayarans
         ]);
     }
-    
+
     public function showMine(Request $request)
     {
         trackVisit();
         $pelanggan_id = session('pelanggan_id');
-    
+
         $sortBy = $request->input('sort_by', 'created_at');
         $sortOrder = $request->input('sort_order', 'desc');
-    
+
         $query = Pembayaran::whereHas('pemesanan', function ($q) use ($pelanggan_id) {
             $q->where('id_pelanggan', $pelanggan_id);
         })->with('pemesanan');
-    
+
         if ($request->filled('status')) {
             $query->where('status', $request->input('status'));
         }
-    
+
         if ($request->filled('date_from')) {
             $query->whereDate('created_at', '>=', $request->input('date_from'));
         }
-    
+
         if ($request->filled('date_to')) {
             $query->whereDate('created_at', '<=', $request->input('date_to'));
         }
-    
+
         $pembayarans = $query->orderBy($sortBy, $sortOrder)->paginate(10);
-    
+
         return view('pembayaran.index', [
             'pembayarans' => $pembayarans
         ]);
     }
-    
-    
+
+
     public function show(string $pembayaran_id)
     {
         $pembayaran = Pembayaran::findOrFail($pembayaran_id);
@@ -88,7 +88,7 @@ class PembayaranController extends Controller
         ]);
     }
 
-    public function create(Request $request) 
+    public function create(Request $request)
     {
         try
         {
@@ -110,7 +110,7 @@ class PembayaranController extends Controller
                 $hargaHewan = $itemPemesanan->hewanQurban->harga;
                 $jumlah += $hargaHewan;
             }
-            
+
             $image = $request->file('bukti');
             $extension = $image->getClientOriginalExtension();
             $filename = time() . '_' . $pelanggan_id . '.' . $extension;
@@ -128,12 +128,12 @@ class PembayaranController extends Controller
             DB::commit();
             return redirect()->back()->with('success', 'Pembayaran berhasil dibuat');
         }
-        catch (\Illuminate\Validation\ValidationException $e) 
+        catch (\Illuminate\Validation\ValidationException $e)
         {
             DB::rollBack();
             return response()->json(['errors' => $e->validator->errors()], 422);
-        } 
-        catch (\Exception $e) 
+        }
+        catch (\Exception $e)
         {
             DB::rollBack();
             return response()->json(['message' => 'Gagal memperbarui status pembayaran', 'error' => $e->getMessage()], 500);
@@ -142,7 +142,7 @@ class PembayaranController extends Controller
 
     public function updateStatus(Request $request, string $pembayaran_id)
     {
-        try 
+        try
         {
             DB::beginTransaction();
             $pembayaran = Pembayaran::findOrFail($pembayaran_id);
@@ -153,13 +153,13 @@ class PembayaranController extends Controller
             $pembayaran->update($validatedData + ['id_admin' => $admin_id]);
             DB::commit();
             return response()->json(['message' => 'Status pembayaran berhasil diperbarui', 'pembayaran' => $pembayaran], 200);
-        } 
-        catch (\Illuminate\Validation\ValidationException $e) 
+        }
+        catch (\Illuminate\Validation\ValidationException $e)
         {
             DB::rollBack();
             return response()->json(['errors' => $e->validator->errors()], 422);
-        } 
-        catch (\Exception $e) 
+        }
+        catch (\Exception $e)
         {
             DB::rollBack();
             return response()->json(['message' => 'Gagal memperbarui status pembayaran', 'error' => $e->getMessage()], 500);

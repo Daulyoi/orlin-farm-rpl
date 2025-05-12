@@ -14,7 +14,7 @@
         <a href="{{ route('filament.admin.auth.login') }}">Admin</a>
     @endif
 
-    @if (session('admin_id'))
+    @if (Auth::guard('admin')->check())
         <p> Hai Admin!</p>
         <a href="{{ route('admin.dashboard') }}">Dashboard Admin</a>
         <a href="{{ route('admin.logout') }}">Logout</a>
