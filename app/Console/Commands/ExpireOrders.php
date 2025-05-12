@@ -4,8 +4,9 @@ namespace App\Console\Commands;
 
 use App\Models\Pemesanan;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 
-// run with php artisan app:expire-orders
+// run with php artisan schedule:run
 class ExpireOrders extends Command
 {
     /**
@@ -20,7 +21,7 @@ class ExpireOrders extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Checks for pemesanans with the status "pending" and automatically sets the status to cancelled if current time is past expired_at';
 
     /**
      * Execute the console command.
@@ -32,8 +33,9 @@ class ExpireOrders extends Command
             ->get();
 
         foreach ($expiredOrders as $order) {
-            $order->status = 'expired';
+            $order->status = 'cancelled';
             $order->save();
+            Log::info('Order expired');
         }
     }
 }

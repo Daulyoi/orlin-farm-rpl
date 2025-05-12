@@ -29,7 +29,7 @@ class PelangganController extends Controller
             'alamat' => $request->alamat,
             'no_telp' => $request->no_telp,
         ]);
-        return redirect()->intended('admin/login')->with('success', 'Registration successful! Please login.');
+        return redirect()->intended('/')->with('success', 'Registration successful! Please login.');
     }
 
     public function updateProfile(Request $request, $id)

@@ -4,14 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Keranjang;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\{DB, Auth};
+
 
 class KeranjangController extends Controller
 {   
     // DONE
     public function showMine() 
     {
-        $pelanggan_id = session('pelanggan_id');
+        trackVisit();
+        $pelanggan_id = currentPelanggan()->id;
         $itemKeranjangs = Keranjang::where('id_pelanggan', $pelanggan_id)
             ->get();
         return view('keranjang', [
@@ -25,7 +27,7 @@ class KeranjangController extends Controller
         try
         {
             DB::beginTransaction();
-            $pelanggan_id = session('pelanggan_id');
+            $pelanggan_id = currentPelanggan()->id;
             if (!$pelanggan_id) {
                 DB::rollBack();
                 return redirect()->back()->with('error', 'Item gagal ditambahkan.');
@@ -62,7 +64,7 @@ class KeranjangController extends Controller
     {
         try {
             DB::beginTransaction();
-            $pelanggan_id = session('pelanggan_id');
+            $pelanggan_id = currentPelanggan()->id;
             if (!$pelanggan_id) {
                 DB::rollBack();
                 return redirect()->back()->with('error', 'Item gagal dihapus.');
