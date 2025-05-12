@@ -8,14 +8,9 @@ use App\Http\Controllers\KeranjangController;
 use App\Http\Controllers\PemesananController;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Middleware\IsAdmin;
+use App\Http\Middleware\IsPelanggan;
 
 Route::get('/', [HewanQurbanController::class, 'showAll'])->name('home');
-
-Route::get('/test-session', function () {
-    session(['pelanggan_id' => 12345]); // Manually set session
-    dd(session('pelanggan_id')); // This should output 12345
-});
-
 Route::get('/home', [HewanQurbanController::class, 'showAll'])->name('home');
 
 // Register
@@ -40,21 +35,21 @@ Route::post('/logout', [PelangganController::class, 'logout'])->name('pelanggan.
 
 
 // Pemesanan
-Route::get('/pemesanan', [PemesananController::class, 'showMine'])->name('pelanggan.pemesanan');
-Route::get('/pemesanan/{id_pemesanan}', [PemesananController::class, 'show'])->name('pelanggan.pemesanan.detail');
-Route::post('/pemesanan/create', [PemesananController::class, 'createFromKeranjang'])->name('pelanggan.pemesanan.create');
-Route::get('/pemesanan/cancel/{id_pemesanan}', [PemesananController::class, 'cancel'])->name('pelanggan.pemesanan.cancel');
+Route::get('/pemesanan', [PemesananController::class, 'showMine'])->name('pelanggan.pemesanan')->middleware([IsPelanggan::class]);
+Route::get('/pemesanan/{id_pemesanan}', [PemesananController::class, 'show'])->name('pelanggan.pemesanan.detail')->middleware([IsPelanggan::class]);
+Route::post('/pemesanan/create', [PemesananController::class, 'createFromKeranjang'])->name('pelanggan.pemesanan.create')->middleware([IsPelanggan::class]);
+Route::get('/pemesanan/cancel/{id_pemesanan}', [PemesananController::class, 'cancel'])->name('pelanggan.pemesanan.cancel')->middleware([IsPelanggan::class]);
 
 // Keranjang
-Route::get('/keranjang', [KeranjangController::class, 'showMine'])->name('pelanggan.keranjang');
-Route::post('/keranjang/add', [KeranjangController::class, 'add'])->name('pelanggan.keranjang.add');
-Route::delete('/keranjang/delete/{keranjang_id}', [KeranjangController::class, 'delete'])->name('pelanggan.keranjang.delete');
+Route::get('/keranjang', [KeranjangController::class, 'showMine'])->name('pelanggan.keranjang')->middleware([IsPelanggan::class]);
+Route::post('/keranjang/add', [KeranjangController::class, 'add'])->name('pelanggan.keranjang.add')->middleware([IsPelanggan::class]);
+Route::delete('/keranjang/delete/{keranjang_id}', [KeranjangController::class, 'delete'])->name('pelanggan.keranjang.delete')->middleware([IsPelanggan::class]);
 
 // Pembayaran
-Route::get('admin/pembayaran', [PembayaranController::class, 'showAll'])->name('admin.pembayaran')->middleware([IsAdmin::class]);
-Route::get('/pembayaran', [PembayaranController::class, 'showMine'])->name('pelanggan.pembayaran');
-Route::get('/pembayaran/{id_pembayaran}', [PembayaranController::class, 'show'])->name('pelanggan.pembayaran.detail');
-Route::post('/pembayaran/create', [PembayaranController::class, 'create'])->name('pelanggan.pembayaran.create');
+//Route::get('admin/pembayaran', [PembayaranController::class, 'showAll'])->name('admin.pembayaran')->middleware([IsAdmin::class]);
+Route::get('/pembayaran', [PembayaranController::class, 'showMine'])->name('pelanggan.pembayaran')->middleware([IsPelanggan::class]);
+Route::get('/pembayaran/{id_pembayaran}', [PembayaranController::class, 'show'])->name('pelanggan.pembayaran.detail')->middleware([IsPelanggan::class]);
+Route::post('/pembayaran/create', [PembayaranController::class, 'create'])->name('pelanggan.pembayaran.create')->middleware([IsPelanggan::class]);
 
 
 
