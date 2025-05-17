@@ -1,25 +1,61 @@
-<div class="container">
-    <h1>Keranjang Saya</h1>
-    @if($itemKeranjangs->count())
-        <ul>
-            @foreach($itemKeranjangs as $item)
-                <li>
-                    <p>Jenis : {{ $item->hewanQurban->jenis }}</p>
-                    <p>Bobot : {{ $item->hewanQurban->bobot }}</p>
-                    <p>Harga : Rp{{ number_format($item->hewanQurban->harga) }}</p>
-                    <form method="POST" action="{{ route('pelanggan.keranjang.delete', $item->id) }}" class="d-inline delete-form">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" onclick="return confirm('Yakin ingin menghapus?')">Hapus</button>
-                    </form>
-                </li>
-            @endforeach
-        </ul>
-        <form method="POST" action="{{ route('pelanggan.pemesanan.create') }}">
-            @csrf
-            <button type="submit">Buat Pemesanan</button>
-        </form>
-    @else
-        <p>Keranjang kosong.</p>
-    @endif
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="keranjang.css">
+    <title>Keranjang</title>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="Logo Orlin Farm.png" alt="Logo Orlin Farm">
+            <span>Orlin Farm</span>
+        </div>
+        <nav>
+            <a href="#">Profil</a>
+            <a href="#">Tabungan Qurban</a>
+            <a href="#">Masuk</a>
+            <a href="#">Daftar</a>
+        </nav>
+    </header>
+
+    <div class="main-container">
+        <!-- Keranjang Section -->
+        <section class="keranjang-section">
+            <h2>Keranjang</h2>
+            <div class="keranjang-container">
+                <div class="keranjang-card">
+                    <div class="keranjang-img"><img src="sapi.jpg" alt=""></div>
+                    <p>Deskripsi hewan qurban jenis 1</p>
+                    <div class="keranjang-quantity">
+                        <button class="quantity-button">-</button>
+                        <span>1</span>
+                        <button class="quantity-button">+</button>
+                    </div>
+                </div>
+                <div class="keranjang-card">
+                    <div class="keranjang-img"><img src="kambing.jpg" alt=""></div>
+                    <p>Deskripsi hewan qurban jenis 2</p>
+                    <div class="keranjang-quantity">
+                        <button class="quantity-button">-</button>
+                        <span>1</span>
+                        <button class="quantity-button">+</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="ringkasan-section">
+            <h2>Ringkasan</h2>
+            <div class="ringkasan-card">
+                <p>Kuantitas total hewan qurban yang dimasukkan ke dalam keranjang</p>
+            </div>
+            <div class="ringkasan-card">
+                <p>Harga total hewan qurban yang dimasukkan ke dalam keranjang</p>
+            </div>
+            <button class="pesan-button">Pesan Hewan Qurban</button>
+        </section>
+    </div>
+</body>
+</html>
