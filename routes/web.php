@@ -56,5 +56,9 @@ Route::get('/landingpage', function () {
 	return view('landingpage.landingpage');
 });
 
+// Etalase
+Route::get('/etalase', function () {
+	return view('landingpage.etalase');
+});
 
 
