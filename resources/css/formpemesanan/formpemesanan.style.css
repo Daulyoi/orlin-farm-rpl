@@ -1,0 +1,138 @@
+* {
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+  }
+  
+  body {
+    margin: 0;
+    background-color: #f7f7f7;
+  }
+  
+  /* HEADER PERSIS SEPERTI LOGIN */
+  header {
+    background-color: #5ea2dd;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 40px;
+    color: white;
+  }
+  
+  .logo {
+    display: flex;
+    align-items: center;
+  }
+  
+  .logo img {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+  }
+  
+  .logo span {
+    font-size: 20px;
+    font-weight: bold;
+  }
+  
+  nav a {
+    color: white;
+    text-decoration: none;
+    margin-left: 20px;
+  }
+  
+  /* LAYOUT UTAMA */
+  .container {
+    display: flex;
+    justify-content: space-between;
+    padding: 30px 40px;
+    gap: 40px;
+  }
+  
+  /* FORM KIRI */
+  .form-area {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form-group input {
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+  }
+  
+  /* METODE PEMBAYARAN */
+  .payment-section {
+    margin-top: 20px;
+  }
+  
+  .payment-section h3 {
+    margin-bottom: 10px;
+  }
+  
+  .payment-box {
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 15px;
+    background-color: white;
+  }
+  
+  .payment-method {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+  }
+  
+  .saldo {
+    color: green;
+  }
+  
+  .icon-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  
+  .icon-row img {
+    height: 32px;
+  }
+  
+  /* BOX CHECKOUT KANAN */
+  .checkout-box {
+    flex: 1;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 20px;
+    background-color: white;
+  }
+  
+  .checkout-box h2 {
+    margin-top: 0;
+  }
+  
+  .checkout-box p {
+    margin: 10px 0;
+  }
+  
+  .checkout-box button {
+    margin-top: 20px;
+    width: 100%;
+    background-color: #5ea2dd;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
