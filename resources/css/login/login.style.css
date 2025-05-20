@@ -1,0 +1,111 @@
+* {
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+  }
+  
+  body {
+    margin: 0;
+    background-color: #f7f7f7;
+  }
+  
+  header {
+    background-color: #5ea2dd;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 40px;
+    color: white;
+  }
+  
+  .logo img {
+    width: 120px;
+    height: auto;
+  }  
+  
+  nav a {
+    color: white;
+    text-decoration: none;
+    margin-left: 20px;
+  }
+  
+  main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+  }
+  
+  .login-box {
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    width: 350px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .input-group {
+    position: relative;
+    display: flex;
+    align-items: center;
+    border: 1px solid #999;
+    border-radius: 8px;
+    padding: 8px 12px;
+  }
+  
+  .input-group input {
+    border: none;
+    outline: none;
+    flex: 1;
+    font-size: 16px;
+  }
+  
+  .icon {
+    margin-right: 8px;
+  }
+  
+  .toggle-password {
+    cursor: pointer;
+    margin-left: auto;
+  }
+  
+  .remember-forgot {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    color: #666;
+  }
+  
+  .remember-forgot a {
+    color: #2e9f4b;
+    text-decoration: none;
+  }
+  
+  button {
+    background-color: #61d64b;
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .register-link {
+    text-align: center;
+    font-size: 14px;
+  }
+  
+  .register-link a {
+    color: #2e9f4b;
+    text-decoration: none;
+  }
+  
+  .icon,
+  .toggle-password {
+    width: 20px;
+    height: 20px;
+  }
+  
