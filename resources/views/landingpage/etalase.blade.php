@@ -142,19 +142,6 @@
   </style>
 </head>
 <body>
-  <header>
-    <div class="logo">
-      <img src="Logo Orlin Farm.png" alt="Logo Orlin Farm">
-      <span>Orlin Farm</span>
-    </div>
-    <nav>
-      <a href="#">Profil</a>
-      <a href="#">Tabungan Qurban</a>
-      <a href="#">Masuk</a>
-      <a href="#">Daftar</a>
-    </nav>
-  </header>
-
   <section class="filter-section">
     <h2>Urutkan berdasarkan</h2>
     <div class="filter-controls">

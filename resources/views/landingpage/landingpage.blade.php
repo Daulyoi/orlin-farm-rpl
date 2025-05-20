@@ -125,5 +125,8 @@ nav a:hover {
       </p>
     </div>
   </section>
+
+  	@include('landingpage.etalase')
+
 </body>
 </html>
