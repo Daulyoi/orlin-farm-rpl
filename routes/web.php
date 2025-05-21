@@ -51,14 +51,14 @@ Route::get('/pembayaran', [PembayaranController::class, 'showMine'])->name('pela
 Route::get('/pembayaran/{id_pembayaran}', [PembayaranController::class, 'show'])->name('pelanggan.pembayaran.detail')->middleware([IsPelanggan::class]);
 Route::post('/pembayaran/create', [PembayaranController::class, 'create'])->name('pelanggan.pembayaran.create')->middleware([IsPelanggan::class]);
 
-// Landing Page
+// Landing Page 🙏
 Route::get('/landingpage', function () {
 	return view('landingpage.landingpage');
-});
+}); 
 
 // Etalase
 Route::get('/etalase', function () {
 	return view('landingpage.etalase');
-});
+}); 
 
 
