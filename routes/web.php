@@ -55,10 +55,21 @@ Route::post('/pembayaran/create', [PembayaranController::class, 'create'])->name
 Route::get('/landingpage', function () {
 	return view('landingpage.landingpage');
 }); 
-
 // Etalase
 Route::get('/etalase', function () {
 	return view('landingpage.etalase');
 }); 
+// Keranjang
+Route::get('/keranjang', function () {
+	return view('keranjang');
+}); 
 
+// Profile User
+Route::get('/profiluser', function () {
+	return view('profiluser.profiluser');
+});
 
+// Riwayat Pemesanan
+Route::get('/riwayatpemesanan', function () {
+	return view('profiluser.riwayatpesanan');
+});
