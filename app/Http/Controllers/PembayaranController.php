@@ -139,8 +139,23 @@ class PembayaranController extends Controller
         }
     }
 
-    public function showPembayaranForm() {
-        return view('pembayaran.formpembayaran');
+    public function showPembayaranForm(string $pemesanan_id)
+    {
+        $pemesanan = Pemesanan::find($pemesanan_id);
+
+        // Handle jika pemesanan tidak ditemukan
+        if (!$pemesanan) {
+            return route('home');
+        }
+        
+        // Pastikan hanya pelanggan yang sesuai yang bisa mengakses
+        if ($pemesanan->id_pelanggan !== currentPelanggan()->id()) {
+            return route('home');
+        }
+
+        return view('pembayaran.formpembayaran', [
+            'pemesanan' => $pemesanan
+        ]);
     }
 
     public function updateStatus(Request $request, string $pembayaran_id)
