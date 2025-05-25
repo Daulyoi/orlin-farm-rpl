@@ -108,7 +108,6 @@ nav a:hover {
     <nav>
       <ul>
         <li><a href="#">Profil</a></li>
-        <li><a href="#">Tabungan Qurban</a></li>
         <li><a href="#">Masuk</a></li>
         <li><a href="#">Daftar</a></li>
       </ul>
