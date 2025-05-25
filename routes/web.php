@@ -80,9 +80,7 @@ Route::get('/formpemesanan', function () {
 }); 
 
 // Pembayaran bank
-Route::get('/bank', function () {
-	return view('pembayaran.bank');
-}); 
+Route::get('/bayar/{id_pemesanan}', [PembayaranController::class, 'showPembayaranForm'])->name('pelanggan.pembayaran.bank')->middleware([IsPelanggan::class]);
 
 // Pembayaran qris
 Route::get('/qris', function () {
