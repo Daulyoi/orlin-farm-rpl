@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="RiwayatPemesanan.css">
     <title>Riwayat Pemesanan</title>
+    <link rel="stylesheet" href="/css/profiluser/riwayatpesanan.style.css">
 </head>
 <body>
     <!-- Header -->
@@ -15,12 +16,11 @@
         </div>
         <nav>
             <a href="#">Profil</a>
-            <a href="#">Tabungan Qurban</a>
             <a href="#">Masuk</a>
             <a href="#">Daftar</a>
         </nav>
     </header>
-    
+
     <!-- Main Container -->
     <div class="main-container">
         <!-- Sidebar -->

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="UserProfil.css">
     <title>Profil Pengguna</title>
+    <link rel="stylesheet" href="/css/profiluser/profiluser.style.css">
 </head>
 <body>
     <header>
@@ -14,7 +15,6 @@
         </div>
         <nav>
             <a href="#">Profil</a>
-            <a href="#">Tabungan Qurban</a>
             <a href="#">Masuk</a>
             <a href="#">Daftar</a>
         </nav>
@@ -45,7 +45,7 @@
                 <input type="text" id="telepon" value="081231231234">
 
                 <label for="alamat">Alamat</label>
-                <textarea id="alamat">Jl. Babakan Raya No.4, Babakan, Kec. Dramaga, Kabupaten Bogor, Jawa Barat</textarea>
+                <input type="text" id="alamat" value="Jl. Babakan Raya No.4, Babakan, Kec. Dramaga, Kabupaten Bogor, Jawa Barat">
 
                 <label for="password-lama">Password</label>
                 <div class="password-container">

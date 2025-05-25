@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="keranjang.css">
     <title>Keranjang</title>
+    <link rel="stylesheet" href="/css/keranjang.style.css">
 </head>
 <body>
     <header>
@@ -14,7 +15,6 @@
         </div>
         <nav>
             <a href="#">Profil</a>
-            <a href="#">Tabungan Qurban</a>
             <a href="#">Masuk</a>
             <a href="#">Daftar</a>
         </nav>

@@ -54,12 +54,34 @@ Route::post('/pembayaran/create', [PembayaranController::class, 'create'])->name
 // Landing Page 🙏
 Route::get('/landingpage', function () {
 	return view('landingpage.landingpage');
-}); 
+});
 
-// Etalase
-Route::get('/etalase', function () {
-	return view('landingpage.etalase');
-}); 
+// Keranjang
+Route::get('/viewkeranjang', function () {
+	return view('keranjang');
+});
+
+// Profile User
+Route::get('/profiluser', function () {
+	return view('profiluser.profiluser');
+});
+
+// Riwayat Pemesanan
+Route::get('/riwayatpemesanan', function () {
+	return view('profiluser.riwayatpesanan');
+});
+
+// Form Pemesanan
+Route::get('/formpemesanan', function () {
+	return view('pemesanan.formpemesanan');
+});
+
+// Pembayaran bank
+Route::get('/bank', function () {
+	return view('pembayaran.bank');
+});
+
+Route::get('/bayar/{id_pemesanan}', [PembayaranController::class, 'showPembayaranForm'])->name('pelanggan.pembayaran.bank')->middleware([IsPelanggan::class]);
 
 Route::get('/formpemesanan', function () {
 	return view('pemesanan.formpemesanan');
@@ -68,6 +90,10 @@ Route::get('/formpemesanan', function () {
 Route::get('/test/login', function () {
 	return view('login.login');
 }); 
+// Pembayaran qris
+Route::get('/qris', function () {
+	return view('pembayaran.qris');
+});
 
 Route::get('/test/register', function () {
 	return view('register.register');

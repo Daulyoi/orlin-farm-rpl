@@ -12,11 +12,11 @@ class HewanQurbanController extends Controller
         trackVisit();
         $sortBy = $request->input('sort_by', 'created_at');
         $sortOrder = $request->input('sort_order', 'desc');
-    
+
         $query = HewanQurban::query();
-    
+
         $query->where('tersedia', 'tersedia');
-    
+
         if ($request->filled('search')) {
             $search = $request->input('search');
             $query->where(function ($q) use ($search) {
@@ -25,18 +25,18 @@ class HewanQurbanController extends Controller
                   ->orWhere('deskripsi', 'like', '%' . $search . '%');
             });
         }
-    
+
         if ($request->filled('kelamin')) {
             $query->where('kelamin', $request->input('kelamin'));
         }
-    
+
         $query->orderBy($sortBy, $sortOrder);
-    
+
         $hewanQurbans = $query->paginate(10);
-    
-        return view('home', ['hewanQurbans' => $hewanQurbans]);
+
+        return view('landingpage.landingpage', ['hewanQurbans' => $hewanQurbans]);
     }
-    
+
 
     public function showOne($id){
         trackVisit();

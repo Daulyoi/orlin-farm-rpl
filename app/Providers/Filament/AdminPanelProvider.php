@@ -54,6 +54,15 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ]);
+            ])
+            ->colors([
+            'primary' => Color::Indigo,
+            'secondary' => Color::Gray,
+            'danger' => Color::Rose,
+            'warning' => Color::Orange,
+            'success' => Color::Emerald,
+            'info' => Color::Blue,
+            ])
+            ->brandName('Orlin Farm');
     }
 }

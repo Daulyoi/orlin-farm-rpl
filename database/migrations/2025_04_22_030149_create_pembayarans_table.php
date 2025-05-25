@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('pembayarans', function (Blueprint $table) {
             $table->id();
-            $table->string('metode'); # qris, transfer
+            $table->string('metode'); # qris, transfer_mandiri, transfer_bsi, transfer_bca, transfer_bni, transfer_bri
             $table->decimal('jumlah', 10, 2);
             $table->dateTime('tanggal');
             $table->string('bukti');

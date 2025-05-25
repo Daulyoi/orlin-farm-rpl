@@ -78,11 +78,18 @@ class PemesananController extends Controller
         ]);
     }
 
-    public function createFromKeranjang()
+    public function createFromKeranjang(Request $request)
     {
         try
         {
             DB::beginTransaction();
+
+            $validatedData = $request->validate([
+                'nama' => 'required|string|max:255',
+                'alamat' => 'required|string',
+                'no_telp' => 'required|string|max:15',
+                'metode' => 'required|in:qris,transfer_mandiri,transfer_bsi,transfer_bca,transfer_bni,transfer_bri'
+            ]);
 
             $pelanggan_id = currentPelanggan()->id;
             $keranjang_items = Keranjang::where('id_pelanggan', $pelanggan_id)->get();
@@ -106,6 +113,9 @@ class PemesananController extends Controller
                 'tanggal' => now(),
                 'expired_at' => now()->addSeconds(10),
                 'status' => 'pending',
+                'nama' => $validatedData->nama,
+                'alamat' => $validatedData->alamat,
+                'no_telp' => $validatedData->no_telp,
                 'jumlah' => $jumlah_harga,
             ]);
 
@@ -134,6 +144,10 @@ class PemesananController extends Controller
             DB::rollBack();
             return response()->json(['message' => 'Gagal membuat pemesanan.', 'error' => $e->getMessage()], 500);
         }
+    }
+
+    public function showPemesananForm() {
+        return view('pemesanan.formpemesanan');
     }
 
     // WIP
