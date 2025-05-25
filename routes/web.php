@@ -76,25 +76,17 @@ Route::get('/formpemesanan', function () {
 	return view('pemesanan.formpemesanan');
 });
 
-// Pembayaran bank
-Route::get('/bank', function () {
-	return view('pembayaran.bank');
-});
-
-Route::get('/bayar/{id_pemesanan}', [PembayaranController::class, 'showPembayaranForm'])->name('pelanggan.pembayaran.bank')->middleware([IsPelanggan::class]);
-
-Route::get('/formpemesanan', function () {
-	return view('pemesanan.formpemesanan');
-}); 
-
+// Login & Register
 Route::get('/test/login', function () {
 	return view('login.login');
 }); 
-// Pembayaran qris
-Route::get('/qris', function () {
-	return view('pembayaran.qris');
-});
 
 Route::get('/test/register', function () {
 	return view('register.register');
 }); 
+
+// Pembayaran
+Route::get('/bayar/{id_pemesanan}', [PembayaranController::class, 'showPembayaranForm'])
+    ->name('pelanggan.pembayaran.bayar')
+    ->middleware([IsPelanggan::class]);
+
