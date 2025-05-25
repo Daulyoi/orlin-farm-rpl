@@ -87,7 +87,8 @@ class PemesananController extends Controller
             $validatedData = $request->validate([
                 'nama' => 'required|string|max:255',
                 'alamat' => 'required|string',
-                'no_telp' => 'required|string|max:15'
+                'no_telp' => 'required|string|max:15',
+                'metode' => 'required|in:qris,transfer_mandiri,transfer_bsi,transfer_bca,transfer_bni,transfer_bri'
             ]);
 
             $pelanggan_id = currentPelanggan()->id;
