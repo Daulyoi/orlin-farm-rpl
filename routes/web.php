@@ -61,4 +61,14 @@ Route::get('/etalase', function () {
 	return view('landingpage.etalase');
 }); 
 
+Route::get('/formpemesanan', function () {
+	return view('pemesanan.formpemesanan');
+}); 
 
+Route::get('/test/login', function () {
+	return view('login.login');
+}); 
+
+Route::get('/test/register', function () {
+	return view('register.register');
+}); 
