@@ -145,15 +145,15 @@ class PembayaranController extends Controller
 
         // Handle jika pemesanan tidak ditemukan
         if (!$pemesanan) {
-            return route('home');
+            return redirect()->route('home');
         }
         
         // Pastikan hanya pelanggan yang sesuai yang bisa mengakses
-        if ($pemesanan->id_pelanggan !== currentPelanggan()->id()) {
-            return route('home');
+        if ($pemesanan->id_pelanggan !== currentPelanggan()->id) {
+            return redirect()->route('home');
         }
 
-        return view('pelanggan.pembayaran.bank', [
+        return view('pembayaran.bank', [
             'pemesanan' => $pemesanan
         ]);
     }
