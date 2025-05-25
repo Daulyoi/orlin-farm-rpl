@@ -153,7 +153,7 @@ class PembayaranController extends Controller
             return route('home');
         }
 
-        return view('pembayaran.formpembayaran', [
+        return view('pelanggan.pembayaran.bank', [
             'pemesanan' => $pemesanan
         ]);
     }
