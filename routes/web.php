@@ -61,4 +61,17 @@ Route::get('/etalase', function () {
 	return view('landingpage.etalase');
 }); 
 
+// Form Pemesanan
+Route::get('/formpemesanan', function () {
+	return view('pemesanan.formpemesanan');
+}); 
 
+// Pembayaran bank
+Route::get('/bank', function () {
+	return view('pembayaran.bank');
+}); 
+
+// Pembayaran qris
+Route::get('/qris', function () {
+	return view('pembayaran.qris');
+}); 
