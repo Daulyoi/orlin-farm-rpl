@@ -60,6 +60,20 @@ Route::get('/landingpage', function () {
 Route::get('/etalase', function () {
 	return view('landingpage.etalase');
 }); 
+// Keranjang
+Route::get('/keranjang', function () {
+	return view('keranjang');
+}); 
+
+// Profile User
+Route::get('/profiluser', function () {
+	return view('profiluser.profiluser');
+});
+
+// Riwayat Pemesanan
+Route::get('/riwayatpemesanan', function () {
+	return view('profiluser.riwayatpesanan');
+});
 
 // Form Pemesanan
 Route::get('/formpemesanan', function () {
