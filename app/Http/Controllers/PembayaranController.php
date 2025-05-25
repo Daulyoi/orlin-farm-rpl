@@ -95,7 +95,6 @@ class PembayaranController extends Controller
             DB::beginTransaction();
             $validatedData = $request->validate([
                 'id_pemesanan' => 'required|exists:pemesanans,id',
-                'metode' => 'required|in:qris,transfer',
                 'bukti' => 'required|image|mimes:jpeg,png,jpg,gif|max:5120'
             ]);
             $pelanggan_id = currentPelanggan()->id;
@@ -118,7 +117,7 @@ class PembayaranController extends Controller
 
 
             $pembayaran = Pembayaran::create([
-                'metode' => $validatedData['metode'],
+                'metode' => $pemesanan->metode,
                 'jumlah' => $jumlah,
                 'tanggal' => now(),
                 'status' => 'waiting',
@@ -138,6 +137,10 @@ class PembayaranController extends Controller
             DB::rollBack();
             return response()->json(['message' => 'Gagal memperbarui status pembayaran', 'error' => $e->getMessage()], 500);
         }
+    }
+
+    public function showPembayaranForm() {
+        return view('pembayaran.formpembayaran');
     }
 
     public function updateStatus(Request $request, string $pembayaran_id)

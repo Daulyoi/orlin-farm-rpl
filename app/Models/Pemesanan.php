@@ -15,6 +15,10 @@ class Pemesanan extends Model
         'tanggal',
         'expired_at',
         'status', # pending, processing, completed, cancelled
+        'nama',
+        'alamat',
+        'no_telp',
+        'metode',
         'id_pelanggan',
         'jumlah'
     ];

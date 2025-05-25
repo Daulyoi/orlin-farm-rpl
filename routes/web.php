@@ -60,7 +60,7 @@ Route::get('/etalase', function () {
 	return view('landingpage.etalase');
 }); 
 // Keranjang
-Route::get('/keranjang', function () {
+Route::get('/viewkeranjang', function () {
 	return view('keranjang');
 }); 
 
