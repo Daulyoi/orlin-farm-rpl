@@ -73,3 +73,19 @@ Route::get('/profiluser', function () {
 Route::get('/riwayatpemesanan', function () {
 	return view('profiluser.riwayatpesanan');
 });
+
+// Form Pemesanan
+Route::get('/formpemesanan', function () {
+	return view('pemesanan.formpemesanan');
+}); 
+
+// Pembayaran bank
+Route::get('/bank', function () {
+	return view('pembayaran.bank');
+}); 
+
+// Pembayaran qris
+Route::get('/qris', function () {
+	return view('pembayaran.qris');
+}); 
+
