@@ -54,15 +54,12 @@ Route::post('/pembayaran/create', [PembayaranController::class, 'create'])->name
 // Landing Page 🙏
 Route::get('/landingpage', function () {
 	return view('landingpage.landingpage');
-}); 
-// Etalase
-Route::get('/etalase', function () {
-	return view('landingpage.etalase');
-}); 
+});
+
 // Keranjang
 Route::get('/keranjang', function () {
 	return view('keranjang');
-}); 
+});
 
 // Profile User
 Route::get('/profiluser', function () {
@@ -77,15 +74,15 @@ Route::get('/riwayatpemesanan', function () {
 // Form Pemesanan
 Route::get('/formpemesanan', function () {
 	return view('pemesanan.formpemesanan');
-}); 
+});
 
 // Pembayaran bank
 Route::get('/bank', function () {
 	return view('pembayaran.bank');
-}); 
+});
 
 // Pembayaran qris
 Route::get('/qris', function () {
 	return view('pembayaran.qris');
-}); 
+});
 
