@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('nama');
             $table->string('alamat');
             $table->string('no_telp');
+            $table->string('metode'); # qris, transfer_mandiri, transfer_bsi, transfer_bca, transfer_bni, transfer_bri
             $table->foreign('id_pelanggan')->references('id')->on('pelanggans');
             $table->decimal('jumlah', 10, 2);
             $table->timestamps();
