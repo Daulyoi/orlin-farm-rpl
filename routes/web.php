@@ -76,6 +76,15 @@ Route::get('/formpemesanan', function () {
 	return view('pemesanan.formpemesanan');
 });
 
+// Login & Register
+Route::get('/test/login', function () {
+	return view('login.login');
+}); 
+
+Route::get('/test/register', function () {
+	return view('register.register');
+}); 
+
 // Pembayaran
 Route::get('/bayar/{id_pemesanan}', [PembayaranController::class, 'showPembayaranForm'])
     ->name('pelanggan.pembayaran.bayar')
