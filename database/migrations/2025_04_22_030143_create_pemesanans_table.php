@@ -17,6 +17,9 @@ return new class extends Migration
             $table->timestamp('expired_at')->nullable();
             $table->string('status'); # pending, processing, completed, cancelled
             $table->unsignedBigInteger('id_pelanggan');
+            $table->string('nama');
+            $table->string('alamat');
+            $table->string('no_telp');
             $table->foreign('id_pelanggan')->references('id')->on('pelanggans');
             $table->decimal('jumlah', 10, 2);
             $table->timestamps();

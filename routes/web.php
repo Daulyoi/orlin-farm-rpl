@@ -55,7 +55,6 @@ Route::post('/pembayaran/create', [PembayaranController::class, 'create'])->name
 Route::get('/landingpage', function () {
 	return view('landingpage.landingpage');
 }); 
-
 // Etalase
 Route::get('/etalase', function () {
 	return view('landingpage.etalase');
@@ -89,3 +88,4 @@ Route::get('/bank', function () {
 Route::get('/qris', function () {
 	return view('pembayaran.qris');
 }); 
+
