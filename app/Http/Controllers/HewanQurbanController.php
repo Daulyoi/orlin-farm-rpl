@@ -32,7 +32,7 @@ class HewanQurbanController extends Controller
 
         $query->orderBy($sortBy, $sortOrder);
 
-        $hewanQurbans = $query->paginate(10);
+        $hewanQurbans = $query->paginate(8);
 
         return view('landingpage.landingpage', ['hewanQurbans' => $hewanQurbans]);
     }

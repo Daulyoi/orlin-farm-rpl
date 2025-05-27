@@ -7,28 +7,19 @@
   <link rel="stylesheet" href="/css/login/login.style.css">
 </head>
 <body>
-  <header>
-    <div class="logo">
-      <img src="/images/OrlinFarm.png">
-      Orlin Farm
-    </div>
-    <nav>
-      <a href="#">Profil</a>
-      <a href="#">Tabungan Qurban</a>
-      <a href="Login.html">Masuk</a>
-      <a href="Register.html">Daftar</a>
-    </nav>
-  </header>
+
+  <x-header></x-header>
 
   <main>
-    <form class="login-box">
-      <div class="input-group">
+    <form action="{{ route('pelanggan.login') }}" method="POST" class="login-box">
+        @csrf
+        <div class="input-group">
         <img class="icon" src="https://cdn-icons-png.flaticon.com/512/561/561127.png" width="20">
-        <input type="email" placeholder="Email" required>
+        <input type="email" name="email" placeholder="Email" required>
       </div>
       <div class="input-group">
         <img class="icon" src="https://cdn-icons-png.flaticon.com/512/3064/3064155.png" alt="Password Icon" width="20">
-        <input type="password" id="password" placeholder="Password" required>
+        <input type="password" name="password" id="password" placeholder="Password" required>
         <img
           id="eyeIcon"
           class="toggle-password"
@@ -44,7 +35,7 @@
         <a href="#">Lupa Password?</a>
       </div>
       <button type="submit">Masuk</button>
-      <p class="register-link">Belum punya akun? <a href="Register.html">Daftar</a></p>
+      <p class="register-link">Belum punya akun? <a href="{{ route('pelanggan.register') }}">Daftar</a></p>
     </form>
   </main>
 

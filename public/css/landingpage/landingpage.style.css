@@ -17,6 +17,7 @@ body {
     align-items: center;
     padding: 15px 40px;
     color: white;
+    height: 8vh;
   }
 
   /* === Logo Orlin Farm di kiri atas === */
@@ -56,13 +57,30 @@ nav a:hover {
   text-decoration: underline;
 }
 
+.logout-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 0;
+    /* match spacing */
+    font-family: inherit;
+    /* text-decoration: none; */
+}
+
+.logout-btn:hover {
+    text-decoration: underline;
+}
+
 /* ========== HERO SECTION ========== */
 .hero {
   background-image: url('/images/bg-landingpage.jpg');
   background-size: cover;
   background-position: center;
   position: relative;
-  min-height: 88.8vh;
+  /* min-height: 88.8vh; */
+  height: 92vh;
   display: flex;
   justify-content: center;
   align-items: center;

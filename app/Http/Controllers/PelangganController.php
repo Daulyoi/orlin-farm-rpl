@@ -11,7 +11,7 @@ use Illuminate\Validation\ValidationException;
 class PelangganController extends Controller
 {
     public function showRegisterForm(){
-        return view('auth.register');
+        return view('register.register');
     }
 
     public function register(Request $request){
@@ -59,7 +59,7 @@ class PelangganController extends Controller
     }
 
     public function showLoginForm(){
-        return view('auth.login');
+        return view('login.login');
     }
 
     public function login(Request $request){
