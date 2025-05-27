@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Etalase</title>
   <link rel="stylesheet" href="/css/landingpage/etalase.style.css">
+  <link rel="stylesheet" href="/css/app.css">
+
 </head>
 <body>
   <section class="filter-section">
@@ -26,15 +28,15 @@
                 :hewanQurban="$hewanQurban"
             ></x-etalase-card>
         @endforeach
+    </main>
 
         {{-- Pagination --}}
-        <div>
-            {{ $hewanQurbans->appends(request()->query())->links() }}
+        <div class="w-full flex justify-center mt-8">
+            {{ $hewanQurbans->appends(request()->query())->links('pagination::default') }}
         </div>
     @else
         <p>Tidak ada hewan qurban tersedia.</p>
     @endif
 
-  </main>
 </body>
 </html>
