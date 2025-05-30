@@ -40,7 +40,7 @@
                     $jumlah += $hargaHewan;
                 }
             @endphp
-            <a href="{{ route('pelanggan.pemesanan.detail', $pemesanan->id) }}">
+            <a href="{{ route('pelanggan.pembayaran.bayar', $pemesanan->id) }}">
                 Pemesanan #{{ $pemesanan->id }} - {{ $pemesanan->status }} - Rp{{ number_format($jumlah) }}
             </a>
         </li>

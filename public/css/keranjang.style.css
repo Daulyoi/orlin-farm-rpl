@@ -9,37 +9,6 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Header */
-header {
-    background-color: #009fe3; 
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 20px;
-    color: white;
-}
-
-.logo {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.logo img {
-    width: 40px;
-    height: 40px;
-}
-
-.logo span {
-    font-size: 20px;
-    font-weight: bold; 
-}
-
-nav a {
-    color: white;
-    text-decoration: none;
-    margin-right: 20px;
-}
 
 /* Main Container */
 .main-container {

@@ -66,7 +66,7 @@ class PemesananController extends Controller
 
         $pemesanans = $query->orderBy($sortBy, $sortOrder)->paginate(10);
 
-        return view('pemesanan.index', ['pemesanans' => $pemesanans]);
+        return view('profiluser.riwayatpesanan', ['pemesanans' => $pemesanans]);
     }
 
 
@@ -113,9 +113,10 @@ class PemesananController extends Controller
                 'tanggal' => now(),
                 'expired_at' => now()->addSeconds(10),
                 'status' => 'pending',
-                'nama' => $validatedData->nama,
-                'alamat' => $validatedData->alamat,
-                'no_telp' => $validatedData->no_telp,
+                'nama' => $validatedData['nama'],
+                'alamat' => $validatedData['alamat'],
+                'no_telp' => $validatedData['no_telp'],
+                'metode' => $validatedData['metode'],
                 'jumlah' => $jumlah_harga,
             ]);
 

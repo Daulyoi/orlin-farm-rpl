@@ -72,9 +72,10 @@ Route::get('/riwayatpemesanan', function () {
 });
 
 // Form Pemesanan
-Route::get('/formpemesanan', function () {
+Route::get('/pesan', function () {
 	return view('pemesanan.formpemesanan');
-});
+})->name('pelanggan.formpemesanan')
+  ->middleware([IsPelanggan::class]);
 
 // Login & Register
 Route::get('/test/login', function () {
