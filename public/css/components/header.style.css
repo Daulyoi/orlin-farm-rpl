@@ -1,0 +1,62 @@
+header {
+    background-color: #009fe3;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+    color: white;
+    height: 8vh;
+}
+
+header .logo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-left: -20px;
+    cursor: pointer;
+}
+
+header .logo img {
+    width: 40px;
+    height: 40px;
+}
+
+header .logo span {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* === Menu Navigasi di kanan atas === */
+header nav ul {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+  margin-right: -15px;
+}
+
+header nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: normal;
+  transition: 0.3s ease;
+}
+
+header nav a:hover {
+  text-decoration: underline;
+}
+
+header .logout-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 0;
+    /* match spacing */
+    font-family: inherit;
+    /* text-decoration: none; */
+}
+
+header .logout-btn:hover {
+    text-decoration: underline;
+}
