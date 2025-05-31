@@ -257,17 +257,7 @@
     </style>
 </head>
 <body>
-    <header>
-        <a href="/" class="logo">
-            <img src="/images/logo-orlin-farm.png" alt="Orlin Farm Logo">
-            Orlin Farm
-        </a>
-        <nav>
-            <a href="/dashboard">Dashboard</a>
-            <a href="/keranjang">Keranjang</a>
-            <a href="/pemesanan">Pemesanan</a>
-        </nav>
-    </header>
+    <x-header></x-header>
 
     <div class="payment-container">
         <section class="payment-box">

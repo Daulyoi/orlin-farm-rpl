@@ -8,17 +8,7 @@
     <link rel="stylesheet" href="/css/profiluser/profiluser.style.css">
 </head>
 <body>
-    <header>
-        <div class="logo">
-            <img src="Logo Orlin Farm.png" alt="Logo Orlin Farm">
-            <span>Orlin Farm</span>
-        </div>
-        <nav>
-            <a href="#">Profil</a>
-            <a href="#">Masuk</a>
-            <a href="#">Daftar</a>
-        </nav>
-    </header>
+    <x-header></x-header>
 
     <div class="main-container">
         <!-- Sidebar -->
