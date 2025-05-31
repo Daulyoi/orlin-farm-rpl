@@ -18,55 +18,31 @@ Route::prefix('pelanggan')->name('pelanggan.')->group(function () {
 	Route::post('/register', [PelangganController::class, 'register'])->name('register');
 	Route::get('/login', [PelangganController::class, 'showLoginForm'])->name('login.form');
 	Route::post('/login', [PelangganController::class, 'login'])->name('login');
-	Route::post('/logout', [PelangganController::class, 'logout'])->name('logout');
+	Route::post('/logout', [PelangganController::class, 'logout'])->name('logout')->middleware([IsPelanggan::class]);
 	Route::get('/profile', [PelangganController::class, 'showProfile'])->name('profile')->middleware([IsPelanggan::class]);
 	Route::post('/profile', [PelangganController::class,'updateProfile'])->name('profile.update')->middleware([IsPelanggan::class]);
 });
 
+// Keranjang
+Route::prefix('keranjang')->name('pelanggan.keranjang.')->middleware([IsPelanggan::class])->group(function () {
+    Route::get('/', [KeranjangController::class, 'showMine'])->name('index');
+    Route::post('/add', [KeranjangController::class, 'add'])->name('add');
+    Route::delete('/delete/{keranjang_id}', [KeranjangController::class, 'delete'])->name('delete');
+});
+
 // Pemesanan
-Route::get('/pemesanan', [PemesananController::class, 'showMine'])->name('pelanggan.pemesanan')->middleware([IsPelanggan::class]);
-Route::get('/pemesanan/{id_pemesanan}', [PemesananController::class, 'show'])->name('pelanggan.pemesanan.detail')->middleware([IsPelanggan::class]);
-Route::post('/pemesanan/create', [PemesananController::class, 'createFromKeranjang'])->name('pelanggan.pemesanan.create')->middleware([IsPelanggan::class]);
-Route::get('/pemesanan/cancel/{id_pemesanan}', [PemesananController::class, 'cancel'])->name('pelanggan.pemesanan.cancel')->middleware([IsPelanggan::class]);
-
-// Keranjang
-Route::get('/keranjang', [KeranjangController::class, 'showMine'])->name('pelanggan.keranjang')->middleware([IsPelanggan::class]);
-Route::post('/keranjang/add', [KeranjangController::class, 'add'])->name('pelanggan.keranjang.add')->middleware([IsPelanggan::class]);
-Route::delete('/keranjang/delete/{keranjang_id}', [KeranjangController::class, 'delete'])->name('pelanggan.keranjang.delete')->middleware([IsPelanggan::class]);
+Route::prefix('pemesanan')->name('pelanggan.pemesanan.')->middleware([IsPelanggan::class])->group(function () {
+    Route::get('/', [PemesananController::class, 'showMine'])->name('index');
+    Route::get('/{id_pemesanan}', [PemesananController::class, 'show'])->name('detail');
+    Route::get('/checkout', [PemesananController::class, 'showPemesananForm'])->name('checkout.form');
+    Route::post('/checkout', [PemesananController::class, 'createFromKeranjang'])->name('checkout');
+    Route::post('/cancel/{id_pemesanan}', [PemesananController::class, 'cancel'])->name('cancel');
+});
 
 // Pembayaran
-//Route::get('admin/pembayaran', [PembayaranController::class, 'showAll'])->name('admin.pembayaran')->middleware([IsAdmin::class]);
-Route::get('/pembayaran', [PembayaranController::class, 'showMine'])->name('pelanggan.pembayaran')->middleware([IsPelanggan::class]);
-Route::get('/pembayaran/{id_pembayaran}', [PembayaranController::class, 'show'])->name('pelanggan.pembayaran.detail')->middleware([IsPelanggan::class]);
-Route::post('/pembayaran/create', [PembayaranController::class, 'create'])->name('pelanggan.pembayaran.create')->middleware([IsPelanggan::class]);
-
-// Landing Page 🙏
-Route::get('/landingpage', function () {
-	return view('landingpage.landingpage');
+Route::prefix('pembayaran')->name('pelanggan.pembayaran.')->middleware([IsPelanggan::class])->group(function () {
+    Route::get('/', [PembayaranController::class, 'showMine'])->name('index');
+    Route::get('/{id_pembayaran}', [PembayaranController::class, 'show'])->name('detail');
+    Route::get('/bayar/{id_pemesanan}', [PembayaranController::class, 'showPembayaranForm'])->name('bayar.form');
+    Route::post('/bayar/{id_pemesanan}', [PembayaranController::class, 'create'])->name('bayar');
 });
-
-// Keranjang
-Route::get('/viewkeranjang', function () {
-	return view('keranjang');
-});
-
-// Profile User
-Route::get('/profiluser', function () {
-	return view('profiluser.profiluser');
-});
-
-// Riwayat Pemesanan
-Route::get('/riwayatpemesanan', function () {
-	return view('profiluser.riwayatpesanan');
-});
-
-// Form Pemesanan
-Route::get('/pesan', function () {
-	return view('pemesanan.formpemesanan');
-})->name('pelanggan.formpemesanan')
-  ->middleware([IsPelanggan::class]);
-
-// Pembayaran
-Route::get('/bayar/{id_pemesanan}', [PembayaranController::class, 'showPembayaranForm'])
-    ->name('pelanggan.pembayaran.bayar')
-    ->middleware([IsPelanggan::class]);
