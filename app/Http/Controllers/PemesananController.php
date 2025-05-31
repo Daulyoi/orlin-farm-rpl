@@ -111,7 +111,7 @@ class PemesananController extends Controller
             $pemesanan = Pemesanan::create([
                 'id_pelanggan' => $pelanggan_id,
                 'tanggal' => now(),
-                'expired_at' => now()->addSeconds(10),
+                'expired_at' => now()->addDay(),
                 'status' => 'pending',
                 'nama' => $validatedData['nama'],
                 'alamat' => $validatedData['alamat'],
