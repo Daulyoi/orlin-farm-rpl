@@ -11,7 +11,6 @@ use App\Http\Middleware\IsAdmin;
 use App\Http\Middleware\IsPelanggan;
 
 Route::get('/', [HewanQurbanController::class, 'showAll'])->name('home');
-Route::get('/home', [HewanQurbanController::class, 'showAll'])->name('home');
 
 // Register
 Route::get('/register', [PelangganController::class, 'showRegisterForm'])->name('pelanggan.register');
