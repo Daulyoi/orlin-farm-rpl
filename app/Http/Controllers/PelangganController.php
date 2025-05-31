@@ -17,8 +17,8 @@ class PelangganController extends Controller
     public function register(Request $request){
         $request->validate([
             'nama' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:admins',
-            'password' => 'required|string|min:8|confirmed',
+            'email' => 'required|string|email|max:255|unique:pelanggans',
+            'password' => 'required|string|min:8|max:20|confirmed',
             'alamat' => 'nullable|string',
             'no_telp' => 'required|string|max:15',
         ]);
@@ -71,6 +71,9 @@ class PelangganController extends Controller
 
         if (Auth::guard('pelanggan')->attempt(['email' => $request->email, 'password' => $request->password], $request->get('remember'))) {
             return redirect()->route('home')->with('success', 'Logged in successfully.');
+        }
+        else {
+            return redirect()->back()->with('error','Login failed. Please check your credentials.')->withInput();
         }
     }
 
