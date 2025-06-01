@@ -11,210 +11,121 @@ use App\Models\Keranjang;
 
 class PemesananController extends Controller
 {
-    public function showAll(Request $request)
-    {
-        $sortBy = $request->input('sort_by', 'created_at');
-        $sortOrder = $request->input('sort_order', 'desc');
-
-        $query = Pemesanan::with('pelanggan', 'itemPemesanans.hewanQurban', 'pembayaran');
-
-        if ($request->filled('status')) {
-            $query->where('status', $request->input('status'));
-        }
-
-        if ($request->filled('pelanggan_nama')) {
-            $query->whereHas('pelanggan', function ($q) use ($request) {
-                $q->where('nama', 'like', '%' . $request->input('pelanggan_nama') . '%');
-            });
-        }
-
-        if ($request->filled('date_from')) {
-            $query->whereDate('created_at', '>=', $request->input('date_from'));
-        }
-
-        if ($request->filled('date_to')) {
-            $query->whereDate('created_at', '<=', $request->input('date_to'));
-        }
-
-        $pemesanans = $query->orderBy($sortBy, $sortOrder)->paginate(10);
-
-        return view('admin.pemesanan', ['pemesanans' => $pemesanans]);
-    }
-
-    public function showMine(Request $request)
+    public function index(Request $request)
     {
         trackVisit();
-        $pelanggan_id = currentPelanggan()->id;
-
-        $sortBy = $request->input('sort_by', 'created_at');
-        $sortOrder = $request->input('sort_order', 'desc');
-
-        $query = Pemesanan::where('id_pelanggan', $pelanggan_id)
-            ->with('itemPemesanans.hewanQurban');
-
+        
+        $query = Pemesanan::where('id_pelanggan', currentPelanggan()->id)
+            ->with('itemPemesanans')
+        ->with('itemPemesanans.hewanQurban');
+        
         if ($request->filled('status')) {
             $query->where('status', $request->input('status'));
         }
-
+        
         if ($request->filled('date_from')) {
             $query->whereDate('created_at', '>=', $request->input('date_from'));
         }
-
+        
         if ($request->filled('date_to')) {
             $query->whereDate('created_at', '<=', $request->input('date_to'));
         }
+        
+        $sortBy = $request->input('sort_by', 'created_at');
+        $sortOrder = $request->input('sort_order', 'desc');
 
         $pemesanans = $query->orderBy($sortBy, $sortOrder)->paginate(10);
-
-        return view('profiluser.riwayatpesanan', ['pemesanans' => $pemesanans]);
+        
+        return view('pelanggan.pemesanan.index', ['pemesanans' => $pemesanans]);
     }
-
-
+    
     public function show(string $pemesanan_id)
     {
-        $pemesanan = Pemesanan::findOrFail($pemesanan_id);
-        return view('pemesanan.detail', [
-            'pemesanan'=> $pemesanan
-        ]);
+        $pemesanan = currentPelanggan()->pemesanans();
     }
 
-    public function createFromKeranjang(Request $request)
+    public function store(Request $request)
     {
-        try
-        {
-            DB::beginTransaction();
+        $validatedData = $request->validate([
+            'nama' => 'required|string|max:255',
+            'alamat' => 'required|string',
+            'no_telp' => 'required|string|max:15',
+            'metode' => 'required|in:qris,transfer_mandiri,transfer_bsi,transfer_bca,transfer_bni,transfer_bri'
+        ]);
 
-            $validatedData = $request->validate([
-                'nama' => 'required|string|max:255',
-                'alamat' => 'required|string',
-                'no_telp' => 'required|string|max:15',
-                'metode' => 'required|in:qris,transfer_mandiri,transfer_bsi,transfer_bca,transfer_bni,transfer_bri'
-            ]);
+        $pelanggan_id = currentPelanggan()->id;
 
-            $pelanggan_id = currentPelanggan()->id;
-            $keranjang_items = Keranjang::where('id_pelanggan', $pelanggan_id)->get();
+        $keranjang = currentPelanggan()->keranjangs;
 
-            if ($keranjang_items->isEmpty()) {
-                DB::rollBack();
+        if ($keranjang->isEmpty()) {
+            return redirect()->back()->with('error', 'Pemesanan gagal dibuat.');
+        }
+
+        $jumlah_harga = 0;
+        foreach ($keranjang as $item) {
+            if ($item->hewanQurban->tersedia == 'tidak') {
                 return redirect()->back()->with('error', 'Pemesanan gagal dibuat.');
             }
+            $jumlah_harga += $item->hewanQurban->harga;
+        }
 
-            $jumlah_harga = 0;
-            foreach ($keranjang_items as $keranjang_item) {
-                if ($keranjang_item->hewanQurban->tersedia == 'tidak') {
-                    DB::rollBack();
-                    return redirect()->back()->with('error', 'Pemesanan gagal dibuat.');
-                }
-                $jumlah_harga += $keranjang_item->hewanQurban->harga;
-            }
+        $pemesanan = Pemesanan::create([
+            'id_pelanggan' => $pelanggan_id,
+            'tanggal' => now(),
+            'expired_at' => now()->addDay(),
+            'status' => 'pending',
+            'nama' => $validatedData['nama'],
+            'alamat' => $validatedData['alamat'],
+            'no_telp' => $validatedData['no_telp'],
+            'metode' => $validatedData['metode'],
+            'jumlah' => $jumlah_harga,
+        ]);
 
-            $pemesanan = Pemesanan::create([
-                'id_pelanggan' => $pelanggan_id,
-                'tanggal' => now(),
-                'expired_at' => now()->addDay(),
-                'status' => 'pending',
-                'nama' => $validatedData['nama'],
-                'alamat' => $validatedData['alamat'],
-                'no_telp' => $validatedData['no_telp'],
-                'metode' => $validatedData['metode'],
-                'jumlah' => $jumlah_harga,
+        foreach ($keranjang as $item) {
+            $item->hewanQurban->update(['tersedia' => 'tidak']);
+
+            ItemPemesanan::create([
+                'id_pemesanan' => $pemesanan->id,
+                'id_hewan' => $item->id_hewan,
             ]);
-
-            foreach ($keranjang_items as $keranjang_item) {
-                $keranjang_item->hewanQurban->update(['tersedia' => 'tidak']);
-
-                ItemPemesanan::create([
-                    'id_pemesanan' => $pemesanan->id,
-                    'id_hewan' => $keranjang_item->id_hewan,
-                ]);
-            }
-
-            Keranjang::where('id_pelanggan', $pelanggan_id)->delete();
-
-            DB::commit();
-
-            return redirect()->route('pelanggan.pemesanan')->with('success', 'Pemesanan berhasil dibuat.');
         }
-        catch (\Illuminate\Validation\ValidationException $e)
-        {
-            DB::rollBack();
-            return response()->json(['errors' => $e->validator->errors()], 422);
+
+        foreach ($keranjang as $item) {
+            $item->delete();
         }
-        catch (\Exception $e)
-        {
-            DB::rollBack();
-            return response()->json(['message' => 'Gagal membuat pemesanan.', 'error' => $e->getMessage()], 500);
-        }
+
+        return redirect()->route('pelanggan.pemesanan.index')->with('success', 'Pemesanan berhasil dibuat.');
     }
 
-    public function showPemesananForm() {
-        return view('pemesanan.formpemesanan');
-    }
-
-    // WIP
-    public function updateStatusByAdmin(Request $request, string $pemesanan_id)
-    {
-        try {
-            DB::beginTransaction();
-
-            $validatedData = $request->validate([
-                'status' => 'required|in:pending,processing,completed,cancelled',
-            ]);
-
-            $pemesanan = Pemesanan::findOrFail($pemesanan_id);
-
-            $pemesanan->update($validatedData + ['id_admin' => session('admin_id')]);
-
-            DB::commit();
-
-            return response()->json(['message' => 'Pemesanan berhasil diperbarui', 'pemesanan' => $pemesanan], 200);
-
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            DB::rollBack();
-            return response()->json(['errors' => $e->validator->errors()], 422);
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return response()->json(['message' => 'Gagal memperbarui status pemesanan', 'error' => $e->getMessage()], 500);
-        }
+    public function create() {
+        return view('pelanggan.pemesanan.create');
     }
 
     public function cancel(string $pemesanan_id) {
-        try {
-            DB::beginTransaction();
-
-            $pemesanan = Pemesanan::findOrFail($pemesanan_id);
-
-            if ($pemesanan->id_pelanggan != session('pelanggan_id'))
-            {
-                return response()->json(['message' => 'Login dlu bang'], 400);
-            }
-
-            $pemesanan->update([
-                'status' => 'cancelled',
-            ]);
-
-            foreach ($pemesanan->itemPemesanans as $item) {
-                $item->hewanQurban->update(['tersedia' => 'tersedia']);
-            }
-
-            DB::commit();
-
-            return redirect()->back()->with('success', 'Pemesanan berhasil dibatalkan');
-
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            DB::rollBack();
-            return response()->json(['errors' => $e->validator->errors()], 422);
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return response()->json(['message' => 'Gagal memperbarui status pemesanan', 'error' => $e->getMessage()], 500);
+        $pemesanan = Pemesanan::findOrFail($pemesanan_id);
+        if ($pemesanan->id_pelanggan !== currentPelanggan()->id) {
+            abort(403, 'Unauthorized action.');
         }
+        if ($pemesanan->status !== 'pending') {
+            return redirect()->back()->with('error', 'Pemesanan tidak dapat dibatalkan.');
+        }
+        $pemesanan->update([
+            'status' => 'cancelled',
+        ]);
+
+        foreach ($pemesanan->itemPemesanans as $item) {
+            $item->hewanQurban->update(['tersedia' => 'tersedia']);
+        }
+
+        return redirect()->back()->with('success', 'Pemesanan berhasil dibatalkan');
     }
 
-    // WIP
-    public function destroy(string $pemesanan_id)
+    public function destroy(Pemesanan $pemesanan)
     {
-        $pemesanan = Pemesanan::findOrFail($pemesanan_id);
         $pemesanan->delete();
-        return response()->json(['message' => 'Pemesanan berhasil dihapus']);
+        foreach ($pemesanan->itemPemesanans as $item) {
+            $item->hewanQurban->update(['tersedia' => 'tersedia']);
+        }
+        return redirect()->back()->with('success', 'Pemesanan berhasil dihapus');
     }
 }

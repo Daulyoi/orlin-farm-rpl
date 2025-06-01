@@ -25,24 +25,24 @@ Route::prefix('pelanggan')->name('pelanggan.')->group(function () {
 
 // Keranjang
 Route::prefix('keranjang')->name('pelanggan.keranjang.')->middleware([IsPelanggan::class])->group(function () {
-    Route::get('/', [KeranjangController::class, 'showMine'])->name('index');
-    Route::post('/add', [KeranjangController::class, 'add'])->name('add');
-    Route::delete('/delete/{keranjang_id}', [KeranjangController::class, 'delete'])->name('delete');
+    Route::get('/', [KeranjangController::class, 'index'])->name('index');
+    Route::post('/', [KeranjangController::class, 'store'])->name('store');
+    Route::delete('/{keranjang_id}', action: [KeranjangController::class, 'destroy'])->name('destroy');
 });
 
 // Pemesanan
 Route::prefix('pemesanan')->name('pelanggan.pemesanan.')->middleware([IsPelanggan::class])->group(function () {
-    Route::get('/', [PemesananController::class, 'showMine'])->name('index');
-    Route::get('/{id_pemesanan}', [PemesananController::class, 'show'])->name('detail');
-    Route::get('/checkout', [PemesananController::class, 'showPemesananForm'])->name('checkout.form');
-    Route::post('/checkout', [PemesananController::class, 'createFromKeranjang'])->name('checkout');
-    Route::post('/cancel/{id_pemesanan}', [PemesananController::class, 'cancel'])->name('cancel');
+    Route::get('/', [PemesananController::class, 'index'])->name('index');
+    Route::get('/checkout', [PemesananController::class, 'create'])->name('create');
+    Route::post('/checkout', [PemesananController::class, 'store'])->name('store');
+    Route::get('/{id_pemesanan}', [PemesananController::class, 'show'])->name('show');
+    Route::put('/{id_pemesanan}/cancel', [PemesananController::class, 'cancel'])->name('cancel');
 });
 
 // Pembayaran
 Route::prefix('pembayaran')->name('pelanggan.pembayaran.')->middleware([IsPelanggan::class])->group(function () {
     Route::get('/', [PembayaranController::class, 'showMine'])->name('index');
     Route::get('/{id_pembayaran}', [PembayaranController::class, 'show'])->name('detail');
-    Route::get('/bayar/{id_pemesanan}', [PembayaranController::class, 'showPembayaranForm'])->name('bayar.form');
-    Route::post('/bayar/{id_pemesanan}', [PembayaranController::class, 'create'])->name('bayar');
+    Route::get('/{id_pemesanan}/bayar', [PembayaranController::class, 'showPembayaranForm'])->name('bayar.form');
+    Route::post('/{id_pemesanan}/bayar', [PembayaranController::class, 'create'])->name('bayar');
 });
