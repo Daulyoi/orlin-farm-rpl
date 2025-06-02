@@ -1,7 +1,7 @@
 <div class="product-card">
     <div class="product-card__img">
         {{-- <img src="{{ $hewanQurban->gambar ? asset('storage/' . $hewanQurban->gambar) : '/DummyImg.jpg' }}" alt="{{ $hewanQurban->nama }}"> --}}
-        <img src="/DummyImg.jpg" alt="{{ $hewanQurban->jenis }}">
+        <img src="{{ filter_var($hewanQurban->foto, FILTER_VALIDATE_URL) ? $hewanQurban->foto : asset('storage/' . $hewanQurban->foto) }}" alt="{{ $hewanQurban->jenis }}">
     </div>
     <div class="product-card__info">
         <p class="product-card__title">{{ $hewanQurban->jenis }}</p>
