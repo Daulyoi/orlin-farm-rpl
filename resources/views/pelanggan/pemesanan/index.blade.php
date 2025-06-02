@@ -13,14 +13,14 @@
             <h1>Riwayat Pemesanan</h1>
             <div class="search-container">
                 <button class="filter-button">
-                    <img src="filter.png" alt="Filter">
+                    <img src="/images/filter-icon.svg" alt="Filter">
                 </button>
                 <button class="sort-button">
-                    <img src="sort.png" alt="Sort">
+                    <img src="/images/sort-icon.png" alt="Sort">
                 </button>
                 <input type="text" placeholder="Search Here">
                 <button class="search-button">
-                    <img src="search-removebg-preview.png" alt="Search">
+                    <img src="/images/search-icon.png" alt="Search">
                 </button>
             </div>
             <div class="order-list"> {{-- Keep this div if you have other elements in this container, otherwise you can remove it and apply styles to the table directly --}}
@@ -58,7 +58,7 @@
                                 <td><span class="order-status pending">Menunggu Verifikasi</span></td>
                                 <td>
                                     <button class="edit-button">
-                                        <img src="expand-removebg-preview.png" alt="Expand">
+                                        <img src="/images/arrow-right.png" alt="Expand">
                                     </button>
                                 </td>
                             </tr>
