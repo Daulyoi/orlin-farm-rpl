@@ -4,8 +4,8 @@
 @section('content')
     <div class="main-container">
         <aside class="sidebar">
-            <button class="btn btn--secondary sidebar__btn">Profil</button>
-            <button class="btn btn--primary sidebar__btn">Riwayat Pemesanan</button>
+            <a class="btn btn--primary sidebar__btn" href="{{ route('pelanggan.profile') }}">Profil</a>
+            <a class="btn btn--secondary sidebar__btn" href="{{ route('pelanggan.pemesanan.index') }}">Riwayat Pemesanan</a>
         </aside>
 
         <section class="profile">
@@ -13,7 +13,7 @@
                 <img src="{{ asset('DummyImg.jpg') }}" alt="Foto User" class="user-photo">
                 <h1>Selamat datang, {{ currentPelanggan()->nama }}</h1>
             </div>
-            <form class="profil__form">
+            <form class="profil__form" action="{{ route('pelanggan.profile.update') }}" method="POST">
                 <label for="nama">Nama</label>
                 <input type="text" id="nama" value="{{ currentPelanggan()->nama }}">
 

@@ -441,7 +441,7 @@ textarea {
     line-height: 1;
 }
 
-btn .btn--icon {
+.btn .btn--icon {
     display: inline-flex;
     align-items: center;
     color: #721c24;
@@ -1228,4 +1228,189 @@ btn .btn--icon {
         width: 18px;
         height: 18px;
     }
+}
+
+/* ===========================================
+   USER PROFILE
+   =========================================== */
+.sidebar {
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    box-shadow: var(--shadow-md);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    gap: var(--spacing-md);
+}
+
+.profile {
+    width: 100%;
+    padding: var(--spacing-lg);
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.profile img {
+    width: 200px;
+    height: 200px;
+    border-radius: var(--radius-full);
+    object-fit: cover;
+    margin-bottom: var(--spacing-md);
+}
+
+.profile__header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--spacing-md);
+}
+
+.profil__form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.profil__form input {
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: 1px solid var(--color-gray-500);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-base);
+    background: var(--bg-card);
+    color: var(--text-primary);
+    transition: border-color 0.3s ease;
+}
+.profil__form input:focus {
+    outline: none;
+    border-color: var(--border-color-focus);
+}
+.profil__form button {
+    background: var(--color-primary);
+    color: var(--text-white);
+    border: none;
+    padding: var(--spacing-sm) var(--spacing-lg);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-base);
+}
+.profil__form button:hover {
+    background: var(--color-primary-hover);
+    transform: translateY(-2px);
+}
+.profil__form button:disabled {
+    background: var(--color-gray-400);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.profil__form .password-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-xs);
+}
+
+.profil__form .password-container input {
+    width: 50%;
+}
+
+/* ===========================================
+   PEMESANAN INDEX
+   =========================================== */
+.riwayat-section {
+    width: 100%;
+    padding: var(--spacing-lg);
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.search-container {
+    /* Your existing styles for search-container */
+    display: flex;
+    /* Assuming it's a flex container for filter, sort, search input, search button */
+    gap: var(--spacing-sm);
+    /* Or whatever spacing you prefer */
+    align-items: center;
+    margin-bottom: var(--spacing-md);
+    /* Add some space below the search bar */
+}
+
+.order-list table {
+    width: 100%;
+    border-collapse: collapse;
+    /* This is important for tables to remove default cell spacing */
+    background: var(--color-white);
+    /* Or your card background color if you want the table itself to have it */
+    border-radius: var(--radius-md);
+    /* Apply border-radius to the table */
+    overflow: hidden;
+    /* Ensures border-radius is applied correctly with borders */
+}
+
+.order-list th,
+.order-list td {
+    padding: var(--spacing-md);
+    text-align: left;
+    /* Align text to the left */
+}
+
+.order-list thead tr {
+    background: var(--color-gray-200);
+    /* Background for the header row */
+}
+
+.order-list th {
+    font-weight: bold;
+    color: var(--color-text-dark);
+    /* Or your desired header text color */
+}
+
+.order-list tbody tr {
+    border-bottom: 1px solid var(--border-color);
+    /* Separator for rows */
+}
+
+.order-list tbody tr:last-child {
+    border-bottom: none;
+    /* No border for the last row */
+}
+
+.order-list .order-status.pending {
+    color: orange;
+    /* Or your specific color for pending status */
+    font-weight: bold;
+}
+
+.order-list .order-status.verified {
+    color: green;
+    /* Or your specific color for verified status */
+    font-weight: bold;
+}
+
+.edit-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.edit-button img {
+    width: 24px;
+    /* Adjust as needed */
+    height: 24px;
+    /* Adjust as needed */
+    vertical-align: middle;
 }
