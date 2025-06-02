@@ -11,27 +11,35 @@ use Illuminate\Validation\ValidationException;
 class PelangganController extends Controller
 {
     public function showRegisterForm(){
-        return view('register.register');
+        return view('auth.register');
     }
 
     public function register(Request $request){
         $request->validate([
             'nama' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:admins',
-            'password' => 'required|string|min:8|confirmed',
+            'email' => 'required|string|email|max:255|unique:pelanggans',
+            'password' => 'required|string|min:8|max:20|confirmed',
             'alamat' => 'nullable|string',
             'no_telp' => 'required|string|max:15',
         ]);
-        $pelanggan= Pelanggan::create([
+        $pelanggan = Pelanggan::create([
             'nama' => $request->nama,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'alamat' => $request->alamat,
             'no_telp' => $request->no_telp,
         ]);
-        return redirect()->intended('/')->with('success', 'Registration successful! Please login.');
-    }
+        Auth::guard('pelanggan')->login($pelanggan);
 
+        return redirect()->route('home')->with('success', 'Registration successful!');
+    }
+    
+    public function showProfile()
+    {
+        $pelanggan = currentPelanggan();
+        return view('pelanggan.profile', compact('pelanggan'));
+    }
+    
     public function updateProfile(Request $request, $id)
     {
         $pelanggan = Pelanggan::findOrFail($id);
@@ -39,7 +47,7 @@ class PelangganController extends Controller
         $request->validate([
             'nama' => 'required|string|max:255',
             'email' => 'required|email|unique:pelanggans,email,' . $pelanggan->id,
-            'password' => 'nullable|string|min:6|confirmed',
+            'password' => 'nullable|string|min:8|max:20|confirmed',
             'alamat' => 'nullable|string',
             'no_telp' => 'required|string|max:15',
         ]);
@@ -59,7 +67,7 @@ class PelangganController extends Controller
     }
 
     public function showLoginForm(){
-        return view('login.login');
+        return view('auth.login');
     }
 
     public function login(Request $request){
@@ -71,6 +79,9 @@ class PelangganController extends Controller
 
         if (Auth::guard('pelanggan')->attempt(['email' => $request->email, 'password' => $request->password], $request->get('remember'))) {
             return redirect()->route('home')->with('success', 'Logged in successfully.');
+        }
+        else {
+            return redirect()->back()->with('error','Login failed. Please check your credentials.')->withInput();
         }
     }
 

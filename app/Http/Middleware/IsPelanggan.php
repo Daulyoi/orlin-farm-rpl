@@ -18,7 +18,7 @@ class IsPelanggan
         if (auth()->guard('pelanggan')->check()) {
             return $next($request);
         }
-        return redirect('/home');
+        return redirect()->route('pelanggan.login') ;
 
     }
 }

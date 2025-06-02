@@ -1,25 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="RiwayatPemesanan.css">
-    <title>Riwayat Pemesanan</title>
-    <link rel="stylesheet" href="/css/profiluser/riwayatpesanan.style.css">
-</head>
-<body>
-    <x-header></x-header>
+@extends('layouts.app')
+@section('title', 'Pemesanan')
 
-    <!-- Main Container -->
+@section('content')
     <div class="main-container">
-        <!-- Sidebar -->
         <aside class="sidebar">
-            <button class="sidebar-button">Profil</button>
-            <button class="sidebar-button active">Riwayat Pemesanan</button>
+            <button class="btn btn--primary sidebar__btn">Profil</button>
+            <button class="btn btn--secondary sidebar__btn">Riwayat Pemesanan</button>
         </aside>
-
-        <!-- Vertical Divider -->
-        <div class="vertical-divider"></div>
 
         <!-- Riwayat Pemesanan Section -->
         <section class="riwayat-section">
@@ -76,5 +63,4 @@
             </div>
         </section>
     </div>
-</body>
-</html>
+@endsection

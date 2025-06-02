@@ -11,83 +11,38 @@ use App\Http\Middleware\IsAdmin;
 use App\Http\Middleware\IsPelanggan;
 
 Route::get('/', [HewanQurbanController::class, 'showAll'])->name('home');
-Route::get('/home', [HewanQurbanController::class, 'showAll'])->name('home');
 
-// Register
-Route::get('/register', [PelangganController::class, 'showRegisterForm'])->name('pelanggan.register');
-Route::post('/register', [PelangganController::class, 'register']);
-// Route::put('/profile/{id}/edit', [PelangganController::class, 'updateProfile'])->name('pelanggan.updateProfile');
+// Pelanggan
+Route::prefix('pelanggan')->name('pelanggan.')->group(function () {
+	Route::get('/register', [PelangganController::class, 'showRegisterForm'])->name('register.form');
+	Route::post('/register', [PelangganController::class, 'register'])->name('register');
+	Route::get('/login', [PelangganController::class, 'showLoginForm'])->name('login.form');
+	Route::post('/login', [PelangganController::class, 'login'])->name('login');
+	Route::post('/logout', [PelangganController::class, 'logout'])->name('logout')->middleware([IsPelanggan::class]);
+	Route::get('/profile', [PelangganController::class, 'showProfile'])->name('profile')->middleware([IsPelanggan::class]);
+	Route::post('/profile', [PelangganController::class,'updateProfile'])->name('profile.update')->middleware([IsPelanggan::class]);
+});
 
-// Auth Pelanggan
-Route::get('/login', [PelangganController::class, 'showLoginForm'])->name('pelanggan.login');
-Route::post('/login', [PelangganController::class, 'login']);
-Route::post('/logout', [PelangganController::class, 'logout'])->name('pelanggan.logout');
-
-// Admin
-// Perlu diubah biar register nggak bisa di akses
-// Route::get('/admin', [AdminController::class, 'showLoginForm'])->name('admin.login');
-// Route::get('/admin/login', [AdminController::class, 'showLoginForm'])->name('admin.login');
-// Route::post('/admin/login', [AdminController::class, 'login'])->name('admin.login');
-// Route::post('/admin/logout', [AdminController::class, 'logout'])->name('admin.logout')->middleware([IsAdmin::class]);
-// Route::get('/admin/register', [AdminController::class, 'showRegisterForm'])->name('admin.register')->middleware([IsAdmin::class]);
-// Route::post('/admin/register', [AdminController::class, 'register'])->name('admin.register')->middleware([IsAdmin::class]);
-// Route::get('/admin/dashboard', [AdminController::class, 'showDashboard'])->name('admin.dashboard')->middleware([IsAdmin::class]);
-
+// Keranjang
+Route::prefix('keranjang')->name('pelanggan.keranjang.')->middleware([IsPelanggan::class])->group(function () {
+    Route::get('/', [KeranjangController::class, 'index'])->name('index');
+    Route::post('/', [KeranjangController::class, 'store'])->name('store');
+    Route::delete('/{keranjang_id}', action: [KeranjangController::class, 'destroy'])->name('destroy');
+});
 
 // Pemesanan
-Route::get('/pemesanan', [PemesananController::class, 'showMine'])->name('pelanggan.pemesanan')->middleware([IsPelanggan::class]);
-Route::get('/pemesanan/{id_pemesanan}', [PemesananController::class, 'show'])->name('pelanggan.pemesanan.detail')->middleware([IsPelanggan::class]);
-Route::post('/pemesanan/create', [PemesananController::class, 'createFromKeranjang'])->name('pelanggan.pemesanan.create')->middleware([IsPelanggan::class]);
-Route::get('/pemesanan/cancel/{id_pemesanan}', [PemesananController::class, 'cancel'])->name('pelanggan.pemesanan.cancel')->middleware([IsPelanggan::class]);
-
-// Keranjang
-Route::get('/keranjang', [KeranjangController::class, 'showMine'])->name('pelanggan.keranjang')->middleware([IsPelanggan::class]);
-Route::post('/keranjang/add', [KeranjangController::class, 'add'])->name('pelanggan.keranjang.add')->middleware([IsPelanggan::class]);
-Route::delete('/keranjang/delete/{keranjang_id}', [KeranjangController::class, 'delete'])->name('pelanggan.keranjang.delete')->middleware([IsPelanggan::class]);
+Route::prefix('pemesanan')->name('pelanggan.pemesanan.')->middleware([IsPelanggan::class])->group(function () {
+    Route::get('/', [PemesananController::class, 'index'])->name('index');
+    Route::get('/checkout', [PemesananController::class, 'create'])->name('create');
+    Route::post('/checkout', [PemesananController::class, 'store'])->name('store');
+    Route::get('/{id_pemesanan}', [PemesananController::class, 'show'])->name('show');
+    Route::put('/{id_pemesanan}/cancel', [PemesananController::class, 'cancel'])->name('cancel');
+});
 
 // Pembayaran
-//Route::get('admin/pembayaran', [PembayaranController::class, 'showAll'])->name('admin.pembayaran')->middleware([IsAdmin::class]);
-Route::get('/pembayaran', [PembayaranController::class, 'showMine'])->name('pelanggan.pembayaran')->middleware([IsPelanggan::class]);
-Route::get('/pembayaran/{id_pembayaran}', [PembayaranController::class, 'show'])->name('pelanggan.pembayaran.detail')->middleware([IsPelanggan::class]);
-Route::post('/pembayaran/create', [PembayaranController::class, 'create'])->name('pelanggan.pembayaran.create')->middleware([IsPelanggan::class]);
-
-// Landing Page 🙏
-Route::get('/landingpage', function () {
-	return view('landingpage.landingpage');
+Route::prefix('pembayaran')->name('pelanggan.pembayaran.')->middleware([IsPelanggan::class])->group(function () {
+    Route::get('/', [PembayaranController::class, 'showMine'])->name('index');
+    Route::get('/{id_pembayaran}', [PembayaranController::class, 'show'])->name('detail');
+    Route::get('/{id_pemesanan}/bayar', [PembayaranController::class, 'showPembayaranForm'])->name('bayar.form');
+    Route::post('/{id_pemesanan}/bayar', [PembayaranController::class, 'create'])->name('bayar');
 });
-
-// Keranjang
-Route::get('/viewkeranjang', function () {
-	return view('keranjang');
-});
-
-// Profile User
-Route::get('/profiluser', function () {
-	return view('profiluser.profiluser');
-});
-
-// Riwayat Pemesanan
-Route::get('/riwayatpemesanan', function () {
-	return view('profiluser.riwayatpesanan');
-});
-
-// Form Pemesanan
-Route::get('/pesan', function () {
-	return view('pemesanan.formpemesanan');
-})->name('pelanggan.formpemesanan')
-  ->middleware([IsPelanggan::class]);
-
-// Login & Register
-Route::get('/test/login', function () {
-	return view('login.login');
-}); 
-
-Route::get('/test/register', function () {
-	return view('register.register');
-}); 
-
-// Pembayaran
-Route::get('/bayar/{id_pemesanan}', [PembayaranController::class, 'showPembayaranForm'])
-    ->name('pelanggan.pembayaran.bayar')
-    ->middleware([IsPelanggan::class]);
-
