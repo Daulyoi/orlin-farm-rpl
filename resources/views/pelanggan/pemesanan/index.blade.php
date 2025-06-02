@@ -4,8 +4,8 @@
 @section('content')
     <div class="main-container">
         <aside class="sidebar">
-            <button class="btn btn--primary sidebar__btn">Profil</button>
-            <button class="btn btn--secondary sidebar__btn">Riwayat Pemesanan</button>
+            <a class="btn btn--secondary sidebar__btn" href="{{ route('pelanggan.profile') }}">Profil</a>
+            <a class="btn btn--primary sidebar__btn" href="{{ route('pelanggan.pemesanan.index') }}">Riwayat Pemesanan</a>
         </aside>
 
         <!-- Riwayat Pemesanan Section -->
@@ -23,43 +23,48 @@
                     <img src="search-removebg-preview.png" alt="Search">
                 </button>
             </div>
-            <div class="order-list">
-                <div class="order-item">
-                    <span class="order-date">26 Februari 2025</span>
-                    <span class="order-detail">2 Kambing</span>
-                    <span class="order-price">Rp.4.000.000,00</span>
-                    <span class="order-status pending">Menunggu Verifikasi</span>
-                    <button class="edit-button">
-                        <img src="expand-removebg-preview.png" alt="Expand">
-                    </button>
-                </div>
-                <div class="order-item">
-                    <span class="order-date">1 Agustus 2024</span>
-                    <span class="order-detail">2 Kambing</span>
-                    <span class="order-price">Rp.4.000.000,00</span>
-                    <span class="order-status verified">Telah Diverifikasi</span>
-                    <button class="edit-button">
-                        <img src="expand-removebg-preview.png" alt="Expand">
-                    </button>
-                </div>
-                <div class="order-item">
-                    <span class="order-date">23 Mei 2024</span>
-                    <span class="order-detail">3 Kambing</span>
-                    <span class="order-price">Rp.6.000.000,00</span>
-                    <span class="order-status verified">Telah Diverifikasi</span>
-                    <button class="edit-button">
-                        <img src="expand-removebg-preview.png" alt="Expand">
-                    </button>
-                </div>
-                <div class="order-item">
-                    <span class="order-date">15 Maret 2024</span>
-                    <span class="order-detail">1 Sapi & 2 Kambing</span>
-                    <span class="order-price">Rp.9.000.000,00</span>
-                    <span class="order-status verified">Telah Diverifikasi</span>
-                    <button class="edit-button">
-                        <img src="expand-removebg-preview.png" alt="Expand">
-                    </button>
-                </div>
+            <div class="order-list"> {{-- Keep this div if you have other elements in this container, otherwise you can remove it and apply styles to the table directly --}}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tanggal</th>
+                            <th>Detail Pemesanan</th>
+                            <th>Total Harga</th>
+                            <th>Status</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($pemesanans as $pemesanan)
+                            @php
+                            $hewanYangDipesan = '';
+                            $total = count($pemesanan->itemPemesanans);
+                        @endphp
+                        @foreach ($pemesanan->itemPemesanans as $index => $item)
+                            @php
+                                if ($item->hewanQurban) {
+                                    $hewanYangDipesan .= $item->hewanQurban->jenis;
+                                    if ($index < $total - 1) {
+                                        $hewanYangDipesan .= ', ';
+                                    }
+                                }
+                            @endphp
+                        @endforeach
+
+                            <tr>
+                                <td>{{ $pemesanan->created_at->format('Y-m-d') }}</td>
+                                <td>{{ $hewanYangDipesan }}</td>
+                                <td>Rp.{{ number_format($pemesanan->jumlah) }}</td>
+                                <td><span class="order-status pending">Menunggu Verifikasi</span></td>
+                                <td>
+                                    <button class="edit-button">
+                                        <img src="expand-removebg-preview.png" alt="Expand">
+                                    </button>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
         </section>
     </div>
