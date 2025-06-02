@@ -47,7 +47,7 @@ class HewanQurbanFactory extends Factory
             'kelamin' => $this->faker->randomElement(['Jantan', 'Betina']),
             'deskripsi' => $this->faker->sentence(),
             'lokasi' => $this->faker->streetAddress().', '.$this->faker->randomElement(['Jakarta', 'Bogor', 'Depok', 'Tanggerang', 'Bekasi']),
-            'foto' => $this->faker->imageUrl(640, 480, 'animals', true),
+            'foto' => asset('images/hewan-placeholder.jpg'),
         ];
     }
 }
