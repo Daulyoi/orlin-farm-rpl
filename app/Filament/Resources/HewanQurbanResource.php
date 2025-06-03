@@ -103,7 +103,7 @@ class HewanQurbanResource extends Resource
                 ImageColumn::make('foto')
                     ->label('Foto Hewan')
                     ->getStateUsing(function ($record) {
-                        return asset('storage/' . $record->foto);
+                        return asset($record->foto);
                     })
                     ->sortable(),
 

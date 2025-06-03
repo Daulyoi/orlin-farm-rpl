@@ -40,10 +40,10 @@
     
             @if (Auth::guard('admin')->check())
                 <li class="navbar__item">
-                    <a href="{{ route('admin.dashboard') }}" class="navbar__link navbar__link--admin">Dashboard</a>
+                    <a href="{{ route('filament.admin.pages.dashboard') }}" class="navbar__link navbar__link--admin">Dashboard</a>
                 </li>
                 <li class="navbar__item">
-                    <form action="{{ route('admin.logout') }}" method="POST" class="navbar__form">
+                    <form action="{{ route('filament.admin.auth.logout') }}" method="POST" class="navbar__form">
                         @csrf
                         <button type="submit" class="navbar__logout-btn navbar__logout-btn--admin">Logout</button>
                     </form>
