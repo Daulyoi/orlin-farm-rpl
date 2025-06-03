@@ -34,13 +34,13 @@ class PelangganController extends Controller
         return redirect()->route('home')->with('success', 'Registration successful!');
     }
 
-    public function showProfile()
+    public function show()
     {
         $pelanggan = currentPelanggan();
         return view('pelanggan.profile', compact('pelanggan'));
     }
 
-    public function updateProfile(Request $request, $id)
+    public function update(Request $request, $id)
     {
         $pelanggan = Pelanggan::findOrFail($id);
 

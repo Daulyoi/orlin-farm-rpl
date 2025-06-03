@@ -11,16 +11,14 @@
                 <p class="hero__description">
                     Orlin Farm adalah platform terpercaya untuk jual beli hewan qurban secara online yang melayani wilayah Jabodetabek. Kami menyediakan hewan qurban berkualitas, layanan tabungan qurban, serta kemudahan transaksi digital. Dengan semangat transparansi dan amanah, Orlin Farm hadir untuk memudahkan ibadah qurban Anda secara praktis dan tepat sasaran.
                 </p>
-                @if (!currentPelanggan())
-                    <div class="hero__actions">
-                        <a href="{{ route('pelanggan.register.form') }}" class="btn btn--primary btn--large">
-                            Mulai Berbelanja
-                        </a>
-                        <a href="#products" class="btn btn--secondary btn--large" id="lihatProdukBtn">
-                            Lihat Produk
-                        </a>
-                    </div>
-                @endif
+                <div class="hero__actions">
+                    <a href="{{ route('pelanggan.register.form') }}" class="btn btn--primary btn--large">
+                        Mulai Berbelanja
+                    </a>
+                    <a href="#products" class="btn btn--secondary btn--large" id="lihatProdukBtn">
+                        Lihat Produk
+                    </a>
+                </div>
             </div>
         </div>
     </section>
@@ -75,7 +73,7 @@
                                     id="sort-asc" 
                                     class="filter__btn {{ request('sort_order') == 'asc' ? 'filter__btn--active' : '' }}" 
                                     onclick="setSortOrder('asc')">
-                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor" class="btn--icon"><path d="M440-160v-487L216-423l-56-57 320-320 320 320-56 57-224-224v487h-80Z"/></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="http://www.w3.org/2000/svg" width="24px" fill="currentColor" class="btn--icon"><path d="M440-160v-487L216-423l-56-57 320-320 320 320-56 57-224-224v487h-80Z"/></svg>
                             </button>
                         </div>
                     </div>
@@ -122,6 +120,34 @@
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // Parallax effect for hero background only
+    const hero = document.querySelector('.hero');
+    let ticking = false;
+
+    function updateParallax() {
+        const scrolled = window.pageYOffset;
+        const parallaxY = scrolled * 1; // Background moves slower than scroll
+        const scale = Math.max(0.2, .8 - (scrolled * 0.0003)); // Scale from 1 to 0.8
+        
+        if (hero) {
+            // Only animate the background via CSS custom properties
+            hero.style.setProperty('--parallax-scale', scale);
+            hero.style.setProperty('--parallax-y', `${parallaxY}px`);
+        }
+        
+        ticking = false;
+    }
+
+    function requestTick() {
+        if (!ticking) {
+            requestAnimationFrame(updateParallax);
+            ticking = true;
+        }
+    }
+
+    // Throttled scroll event
+    window.addEventListener('scroll', requestTick);
+
     // Check if this is a filter submission (has scroll_pos) vs normal page load
     const isFilterSubmission = {{ request('scroll_pos') ? 'true' : 'false' }};
     const isFromAnchorLink = window.location.hash === '#products';
