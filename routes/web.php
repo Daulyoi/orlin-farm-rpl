@@ -13,7 +13,7 @@ use App\Http\Middleware\IsPelanggan;
 Route::get('/', [HewanQurbanController::class, 'showAll'])->name('home');
 
 // Pelanggan
-Route::prefix('pelanggan')->name('pelanggan.')->group(function () {
+Route::name('pelanggan.')->group(function () {
 	Route::get('/register', [PelangganController::class, 'showRegisterForm'])->name('register.form');
 	Route::post('/register', [PelangganController::class, 'register'])->name('register');
 	Route::get('/login', [PelangganController::class, 'showLoginForm'])->name('login.form');

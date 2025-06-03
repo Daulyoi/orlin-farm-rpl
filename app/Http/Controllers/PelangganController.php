@@ -76,13 +76,17 @@ class PelangganController extends Controller
             'password' => 'required|string',
         ]);
 
+        $credentials = $request->only('email', 'password');
+        
+        if (Auth::guard('pelanggan')->attempt($credentials, $request->boolean('remember'))) {
+            $request->session()->regenerate();
+            return redirect()->intended(route('home'))->with('success', 'Logged in successfully.');
+        }
 
-        if (Auth::guard('pelanggan')->attempt(['email' => $request->email, 'password' => $request->password], $request->get('remember'))) {
-            return redirect()->route('home')->with('success', 'Logged in successfully.');
-        }
-        else {
-            return redirect()->back()->with('error','Login failed. Please check your credentials.')->withInput();
-        }
+        throw ValidationException::withMessages([
+            'email' => ['The provided credentials do not match our records.'],
+            'password' => ['The provided credentials do not match our records.'],
+        ]);
     }
 
     public function logout(Request $request)

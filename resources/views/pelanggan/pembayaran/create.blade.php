@@ -333,8 +333,8 @@
             });
         });
 
-        // Timer countdown
-        const expiredAt = new Date('{{ $pemesanan->expired_at }}').getTime();
+        // Timer countdown - using Jakarta timezone
+        const expiredAt = new Date('{{ \Carbon\Carbon::parse($pemesanan->expired_at)->setTimezone('Asia/Jakarta')->format('c') }}').getTime();
 
         function updateCountdown() {
             const now = new Date().getTime();
