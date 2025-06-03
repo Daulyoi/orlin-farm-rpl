@@ -14,23 +14,23 @@
                 <h1>Selamat datang, {{ currentPelanggan()->nama }}</h1>
             </div>
             <form class="profil__form" action="{{ route('pelanggan.profile.update') }}" method="POST">
+                @csrf
                 <label for="nama">Nama</label>
-                <input type="text" id="nama" value="{{ currentPelanggan()->nama }}">
+                <input type="text" id="nama" name="nama" value="{{ old('nama', currentPelanggan()->nama) }}" required>
 
                 <label for="email">Email</label>
-                <input type="email" id="email" value="{{ currentPelanggan()->email }}">
+                <input type="email" id="email" name="email" value="{{ old('email', currentPelanggan()->email) }}" required>
 
                 <label for="telepon">Nomor Telepon</label>
-                <input type="text" id="telepon" value="{{ currentPelanggan()->no_telp }}">
+                <input type="text" id="telepon" name="no_telp" value="{{ old('no_telp', currentPelanggan()->no_telp) }}" required>
 
                 <label for="alamat">Alamat</label>
-                <input type="text" id="alamat"
-                    value="{{ currentPelanggan()->alamat ?? '' }}">
+                <input type="text" id="alamat" name="alamat" value="{{ old('alamat', currentPelanggan()->alamat ?? '') }}">
 
-                <label for="password-lama">Password</label>
+                <label for="password">Password (kosongkan jika tidak ingin mengubah)</label>
                 <div class="password-container">
-                    <input type="password" id="password-lama" placeholder="Password Lama">
-                    <input type="password" id="password-baru" placeholder="Password Baru">
+                    <input type="password" id="password" name="password" placeholder="Password Baru">
+                    <input type="password" id="password_confirmation" name="password_confirmation" placeholder="Konfirmasi Password Baru">
                 </div>
 
                 <button type="submit" class="btn btn--primary">Simpan Perubahan</button>

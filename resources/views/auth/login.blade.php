@@ -31,7 +31,7 @@
             
             <div class="form__remember">
                 <div class="form__checkbox-group">
-                    <input type="checkbox" class="form__checkbox"> 
+                    <input type="checkbox" name="remember" class="form__checkbox" {{ old('remember') ? 'checked' : '' }}> 
                     <label>Ingat Saya</label>
                 </div>
                 <a href="#" class="form__link">Lupa Password?</a>
