@@ -27,7 +27,6 @@ class PemesananController extends Controller
                 $q->where('nama', 'like', '%' . $search . '%')
                   ->orWhere('alamat', 'like', '%' . $search . '%')
                   ->orWhere('status', 'like', '%' . $search . '%')
-                  ->orWhere('metode', 'like', '%' . $search . '%')
                   ->orWhere(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'), 'like', '%' . $search . '%')
                   ->orWhereHas('itemPemesanans.hewanQurban', function ($hewanQuery) use ($search) {
                       $hewanQuery->where('jenis', 'like', '%' . $search . '%');
@@ -92,7 +91,7 @@ class PemesananController extends Controller
         $pemesanan = Pemesanan::create([
             'id_pelanggan' => $pelanggan_id,
             'tanggal' => now(),
-            'expired_at' => now()->addDay(),
+            'expired_at' => now()->addHours(24),
             'status' => 'pending',
             'nama' => $validatedData['nama'],
             'alamat' => $validatedData['alamat'],

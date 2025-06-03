@@ -36,7 +36,11 @@ class PembayaranResource extends Resource
                 Select::make('metode')
                     ->options([
                         'qris' => 'QRIS',
-                        'transfer' => 'Transfer',
+                        'transfer_bni' => 'Transfer BNI',
+                        'transfer_bca' => 'Transfer BCA',
+                        'transfer_mandiri' => 'Transfer Mandiri',
+                        'transfer_bsi' => 'Transfer BSI',
+                        'transfer_bri' => 'Transfer BRI',
                     ])
                     ->disabled(),
                 TextInput::make('jumlah')
