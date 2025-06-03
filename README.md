@@ -26,17 +26,21 @@ Orlin farm merupakan sebuah bisnis yang menawarkan layanan jual beli hewan qurba
 ![Keranjang](documentation/Keranjang.png)
 ### 6. Riwayat Pemesanan
 ![Riwayat Pemesanan](documentation/RiwayatPemesanan.png)
-### 7. Profil User
+### 7. Pembayaran
+![Profil User](documentation/Pembayaran.png)
+### 8. Detail Pemesanan
+![Profil User](documentation/DetailPemesanan.png)
+### 9. Profil User
 ![Profil User](documentation/UserProfil.png)
-### 8. Admin Login
+### 10. Admin Login
 ![Admin Login](documentation/AdminLogin.png)
-### 9. Admin Dashboard
+### 10. Admin Dashboard
 ![Admin Dashboard](documentation/AdminDashboard1.png)
-### 10. Admin Dashboard (Daftar Hewan Qurban)
+### 11. Admin Dashboard (Daftar Hewan Qurban)
 ![Admin Dashboard Hewan Qurban](documentation/AdminHewanQurbanList.png)
-### 11. Admin Dashboard (Daftar Pemesanan)
+### 12. Admin Dashboard (Daftar Pemesanan)
 ![Admin Dashboard Pemesanan](documentation/AdminPemesananCreate.png)
-### 12. Admin Dashboard (Daftar Pembayaran)
+### 13. Admin Dashboard (Daftar Pembayaran)
 ![Admin Dashboard Pembayaran](documentation/AdminPembayaranList.png)
 
 ## Requirements
