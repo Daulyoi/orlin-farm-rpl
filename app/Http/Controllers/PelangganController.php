@@ -40,9 +40,9 @@ class PelangganController extends Controller
         return view('pelanggan.profile', compact('pelanggan'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        $pelanggan = Pelanggan::findOrFail($id);
+        $pelanggan = currentPelanggan();
 
         $request->validate([
             'nama' => 'required|string|max:255',
@@ -54,8 +54,8 @@ class PelangganController extends Controller
 
         $pelanggan->nama = $request->nama;
         $pelanggan->email = $request->email;
-        $pelanggan->alamat = $request->alamat;
         $pelanggan->no_telp = $request->no_telp;
+        $pelanggan->alamat = $request->alamat;
 
         if ($request->filled('password')) {
             $pelanggan->password = Hash::make($request->password);
@@ -65,7 +65,7 @@ class PelangganController extends Controller
 
         return redirect()->back()->with('success', 'Profile updated!');
     }
-
+    
     public function showLoginForm(){
         return view('auth.login');
     }
