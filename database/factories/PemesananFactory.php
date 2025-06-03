@@ -27,9 +27,6 @@ class PemesananFactory extends Factory
             'nama' => $pelanggan->nama,
             'alamat' => $pelanggan->alamat,
             'no_telp' => $pelanggan->no_telp,
-            'metode' => $this->faker->randomElement([
-                'qris', 'transfer_mandiri', 'transfer_bsi', 'transfer_bca', 'transfer_bni', 'transfer_bri'
-            ]),
             'jumlah' => $this->faker->randomFloat(2, 100000, 1000000),
         ];
     }

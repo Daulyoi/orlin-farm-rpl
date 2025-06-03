@@ -55,7 +55,7 @@
     --bg-overlay: rgba(255, 255, 255, 0.6);
 
     /* Border Colors */
-    --border-color: var(--color-gray-200);
+    --border-color: var(--color-gray-500);
     --border-color-light: #ddd;
     --border-color-focus: var(--color-secondary);
 
@@ -113,6 +113,8 @@
     --z-tooltip: 700;
     --z-toast: 800;
     --z-navbar: 1000;
+    --parallax-scale: 1;
+    --parallax-y: 0;
 }
 
 /* ===========================================
@@ -212,6 +214,9 @@ textarea {
     border: 0;
 }
 
+.form-border {
+    border: 1px solid var(--color-gray-500);
+}
 /* ===========================================
    NAVBAR COMPONENT
    =========================================== */
@@ -343,9 +348,8 @@ textarea {
 .panel {
     display: flex;
     flex-direction: column;
-    min-width: 30%;
     border-radius: var(--radius-md);
-    border: var(--color-gray-500) solid 1px;
+    border: 1px solid var(--color-gray-500) ;
     background-color: var(--color-white);
     padding: var(--spacing-md);
     gap: var(--spacing-md);
@@ -369,10 +373,6 @@ textarea {
    =========================================== */
 .hero {
     background-color: var(--text-white);
-    background-image: url("/images/landing.png");
-    background-size: 90% auto;
-    background-position: 50% -200%;
-    background-repeat: no-repeat;
     min-height: 120vh;
     display: flex;
     align-items: center;
@@ -380,6 +380,7 @@ textarea {
     position: relative;
     color: var(--text-primary);
     text-align: center;
+    overflow: hidden;
 }
 
 .hero::before {
@@ -390,6 +391,23 @@ textarea {
     right: 0;
     bottom: 0;
     background: var(--bg-overlay);
+    z-index: 1;
+}
+
+.hero::after {
+    content: "";
+    position: absolute;
+    top: -10%;
+    left: -10%;
+    right: -10%;
+    bottom: -10%;
+    background-image: url("/images/landing.png");
+    background-size: 90% auto;
+    background-position: 50% center;
+    background-repeat: no-repeat;
+    transform: scale(var(--parallax-scale)) translateY(var(--parallax-y));
+    transition: transform 0.1s ease-out;
+    z-index: 0;
 }
 
 .hero__container {
@@ -461,7 +479,7 @@ textarea {
 .btn--secondary {
     background: var(--color-white);
     color: var(--color-primary);
-    border: 2px solid var(--color-primary);
+    border: 1px solid var(--color-primary);
 }
 
 .btn--secondary:hover {
@@ -578,7 +596,7 @@ textarea {
 
 .filter__select {
     padding: 10px 12px;
-    border: 2px solid var(--border-color-light);
+    border: 1px solid var(--border-color-light);
     border-radius: var(--radius-md);
     font-size: var(--font-size-base);
     background: var(--bg-card);
@@ -589,6 +607,7 @@ textarea {
 }
 
 .filter__select:focus {
+    cursor: default ;
     outline: none;
     border-color: var(--border-color-focus);
 }
@@ -643,7 +662,6 @@ textarea {
     text-align: center;
     padding: var(--spacing-3xl) var(--spacing-lg);
     background: var(--bg-card);
-    border-radius: var(--radius-lg);
 }
 
 .products__empty-icon {
@@ -710,6 +728,11 @@ textarea {
     color: var(--text-primary);
     margin-bottom: var(--spacing-xs);
 }
+.product-card__kelamin {
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: var(--color-gray-500);
+}
 
 .product-card__info-text {
     display: flex;
@@ -741,6 +764,28 @@ textarea {
 .cart {
     padding: var(--spacing-3xl) 0;
     min-height: 60vh;
+}
+
+.keranjang-section {
+    width: 100%;
+    min-height: 60vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.keranjang-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.keranjang-container .products__grid {
+    flex: 1;
+    min-height: 400px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--spacing-lg);
+    align-content: start;
 }
 
 .cart__title {
@@ -862,7 +907,6 @@ textarea {
 
 .form__group input {
     padding: var(--spacing-sm) var(--spacing-md);
-    border: 1px solid var(--color-gray-500);
     border-radius: var(--radius-md);
     font-size: var(--font-size-base);
     background: var(--bg-card);
@@ -1413,4 +1457,53 @@ textarea {
     height: 24px;
     /* Adjust as needed */
     vertical-align: middle;
+}
+
+.payment-instructions__content {
+    display: flex;
+    flex-direction: row;
+}
+
+.payment-instructions__content-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.gray-text {
+    padding: var(--spacing-sm);
+    border-radius: var(--radius-sm);
+    color: var(--color-gray-700);
+    background-color: var(--color-gray-200);
+}
+
+.red-text {
+    padding: var(--spacing-sm);
+    border-radius: var(--radius-sm);
+    color: var(--color-danger);
+    background-color: var(--color-danger-bg);
+}
+
+.yellow-text {
+    padding: var(--spacing-sm);
+    border-radius: var(--radius-sm);
+    color: var(--color-warning-text);
+    background-color: var(--color-warning-bg);
+}
+
+.green-text {
+    padding: var(--spacing-sm);
+    border-radius: var(--radius-sm);
+    color: var(--color-success-text);
+    background-color: var(--color-success-bg);
+}
+
+.btn--cancel {
+    background: var(--color-white);
+    color: var(--color-danger);
+    border: 1px solid var(--color-danger);
+}
+
+.btn--cancel:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px var(--color-danger -shadow);
 }

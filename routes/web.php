@@ -19,8 +19,8 @@ Route::prefix('pelanggan')->name('pelanggan.')->group(function () {
 	Route::get('/login', [PelangganController::class, 'showLoginForm'])->name('login.form');
 	Route::post('/login', [PelangganController::class, 'login'])->name('login');
 	Route::post('/logout', [PelangganController::class, 'logout'])->name('logout')->middleware([IsPelanggan::class]);
-	Route::get('/profile', [PelangganController::class, 'showProfile'])->name('profile')->middleware([IsPelanggan::class]);
-	Route::post('/profile', [PelangganController::class,'updateProfile'])->name('profile.update')->middleware([IsPelanggan::class]);
+	Route::get('/profile', [PelangganController::class, 'show'])->name('profile')->middleware([IsPelanggan::class]);
+	Route::post('/profile', [PelangganController::class,'update'])->name('profile.update')->middleware([IsPelanggan::class]);
 });
 
 // Keranjang
@@ -41,8 +41,8 @@ Route::prefix('pemesanan')->name('pelanggan.pemesanan.')->middleware([IsPelangga
 
 // Pembayaran
 Route::prefix('pembayaran')->name('pelanggan.pembayaran.')->middleware([IsPelanggan::class])->group(function () {
-    Route::get('/', [PembayaranController::class, 'showMine'])->name('index');
-    Route::get('/{id_pembayaran}', [PembayaranController::class, 'show'])->name('detail');
-    Route::get('/{id_pemesanan}/bayar', [PembayaranController::class, 'showPembayaranForm'])->name('bayar.form');
-    Route::post('/{id_pemesanan}/bayar', [PembayaranController::class, 'create'])->name('bayar');
+    Route::get('/', [PembayaranController::class, 'index'])->name('index');
+    Route::get('/{id_pembayaran}', [PembayaranController::class, 'show'])->name('show');
+    Route::get('/{id_pemesanan}/bayar', [PembayaranController::class, 'create'])->name('create');
+    Route::post('/{id_pemesanan}/bayar', [PembayaranController::class, 'store'])->name('store');
 });

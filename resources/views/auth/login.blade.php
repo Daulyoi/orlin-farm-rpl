@@ -37,7 +37,7 @@
                 <a href="#" class="form__link">Lupa Password?</a>
             </div>
             
-            <button type="submit" class="form__submit">Masuk</button>
+            <button type="submit" class="btn btn--primary">Masuk</button>
             <div class="form__footer">
                 Belum punya akun? <a href="{{ route('pelanggan.register') }}" class="form__footer-link">Daftar</a>
             </div>

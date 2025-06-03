@@ -17,7 +17,23 @@ class PemesananController extends Controller
         
         $query = Pemesanan::where('id_pelanggan', currentPelanggan()->id)
             ->with('itemPemesanans')
-        ->with('itemPemesanans.hewanQurban');
+            ->with('itemPemesanans.hewanQurban')
+            ->with('pembayaran');
+        
+        // Search functionality
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('nama', 'like', '%' . $search . '%')
+                  ->orWhere('alamat', 'like', '%' . $search . '%')
+                  ->orWhere('status', 'like', '%' . $search . '%')
+                  ->orWhere('metode', 'like', '%' . $search . '%')
+                  ->orWhere(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'), 'like', '%' . $search . '%')
+                  ->orWhereHas('itemPemesanans.hewanQurban', function ($hewanQuery) use ($search) {
+                      $hewanQuery->where('jenis', 'like', '%' . $search . '%');
+                  });
+            });
+        }
         
         if ($request->filled('status')) {
             $query->where('status', $request->input('status'));
@@ -41,7 +57,12 @@ class PemesananController extends Controller
     
     public function show(string $pemesanan_id)
     {
-        $pemesanan = currentPelanggan()->pemesanans();
+        $pemesanan = Pemesanan::where('id', $pemesanan_id)
+            ->where('id_pelanggan', currentPelanggan()->id)
+            ->with('itemPemesanans.hewanQurban')
+            ->firstOrFail();
+            
+        return view('pelanggan.pemesanan.show', compact('pemesanan'));
     }
 
     public function store(Request $request)
@@ -50,7 +71,6 @@ class PemesananController extends Controller
             'nama' => 'required|string|max:255',
             'alamat' => 'required|string',
             'no_telp' => 'required|string|max:15',
-            'metode' => 'required|in:qris,transfer_mandiri,transfer_bsi,transfer_bca,transfer_bni,transfer_bri'
         ]);
 
         $pelanggan_id = currentPelanggan()->id;
@@ -77,7 +97,6 @@ class PemesananController extends Controller
             'nama' => $validatedData['nama'],
             'alamat' => $validatedData['alamat'],
             'no_telp' => $validatedData['no_telp'],
-            'metode' => $validatedData['metode'],
             'jumlah' => $jumlah_harga,
         ]);
 
@@ -94,11 +113,7 @@ class PemesananController extends Controller
             $item->delete();
         }
 
-        return redirect()->route('pelanggan.pemesanan.index')->with('success', 'Pemesanan berhasil dibuat.');
-    }
-
-    public function create() {
-        return view('pelanggan.pemesanan.create');
+        return redirect()->route('pelanggan.pembayaran.create', ['id_pemesanan' => $pemesanan->id])->with('success', 'Pemesanan berhasil dibuat.');
     }
 
     public function cancel(string $pemesanan_id) {
@@ -106,17 +121,16 @@ class PemesananController extends Controller
         if ($pemesanan->id_pelanggan !== currentPelanggan()->id) {
             abort(403, 'Unauthorized action.');
         }
-        if ($pemesanan->status !== 'pending') {
+        if ($pemesanan->status !== 'pending' || $pemesanan->pembayaran()->exists()) {
+            // Jika pemesanan sudah diproses atau sudah ada pembayaran, tidak bisa dibatalkan
             return redirect()->back()->with('error', 'Pemesanan tidak dapat dibatalkan.');
         }
         $pemesanan->update([
             'status' => 'cancelled',
         ]);
-
         foreach ($pemesanan->itemPemesanans as $item) {
             $item->hewanQurban->update(['tersedia' => 'tersedia']);
         }
-
         return redirect()->back()->with('success', 'Pemesanan berhasil dibatalkan');
     }
 

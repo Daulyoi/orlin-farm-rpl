@@ -12,39 +12,7 @@ use App\Models\Hewan;
 
 class PembayaranController extends Controller
 {
-    public function showAll(Request $request)
-    {
-        $sortBy = $request->input('sort_by', 'created_at');
-        $sortOrder = $request->input('sort_order', 'desc');
-
-        $query = Pembayaran::with('pemesanan.pelanggan', 'pemesanan.itemPemesanans.hewanQurban');
-
-        if ($request->filled('status')) {
-            $query->where('status', $request->input('status'));
-        }
-
-        if ($request->filled('pelanggan_nama')) {
-            $query->whereHas('pemesanan.pelanggan', function ($q) use ($request) {
-                $q->where('nama', 'like', '%' . $request->input('pelanggan_nama') . '%');
-            });
-        }
-
-        if ($request->filled('date_from')) {
-            $query->whereDate('created_at', '>=', $request->input('date_from'));
-        }
-
-        if ($request->filled('date_to')) {
-            $query->whereDate('created_at', '<=', $request->input('date_to'));
-        }
-
-        $pembayarans = $query->orderBy($sortBy, $sortOrder)->paginate(10);
-
-        return view('admin.pembayaran', [
-            'pembayarans' => $pembayarans
-        ]);
-    }
-
-    public function showMine(Request $request)
+    public function index(Request $request)
     {
         trackVisit();
         $pelanggan_id = session('pelanggan_id');
@@ -70,7 +38,7 @@ class PembayaranController extends Controller
 
         $pembayarans = $query->orderBy($sortBy, $sortOrder)->paginate(10);
 
-        return view('pembayaran.index', [
+        return view('pelanggan.pembayaran.index', [
             'pembayarans' => $pembayarans
         ]);
     }
@@ -83,24 +51,22 @@ class PembayaranController extends Controller
         if ($pembayaran->pemesanan->id_pelanggan != $pelanggan_id){
             return redirect()->back();
         }
-        return view('pembayaran.detail', [
+        return view('pelanggan.pembayaran.show', [
             'pembayaran'=> $pembayaran
         ]);
     }
 
-    public function create(Request $request)
+    public function store(Request $request)
     {
-        try
-        {
-            DB::beginTransaction();
             $validatedData = $request->validate([
                 'id_pemesanan' => 'required|exists:pemesanans,id',
-                'bukti' => 'required|image|mimes:jpeg,png,jpg,gif|max:5120'
+                'metode' => 'required|in:qris,transfer_mandiri,transfer_bsi,transfer_bca,transfer_bni,transfer_bri',
+                'bukti' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:5120'
             ]);
             $pelanggan_id = currentPelanggan()->id;
             $pemesanan = Pemesanan::findOrFail($validatedData['id_pemesanan']);
             if ($pemesanan->pelanggan->id != $pelanggan_id) {
-                return redirect()->back()->with('error', 'Pembayaran gagal dibuat');
+                abort(403, 'Unauthorized action.');
             }
             $itemPemesanans = ItemPemesanan::where('id_pemesanan', $validatedData['id_pemesanan'])->get();
             $jumlah = 0;
@@ -115,33 +81,20 @@ class PembayaranController extends Controller
             $filename = time() . '_' . $pelanggan_id . '.' . $extension;
             $path = $image->storeAs('proofs', $filename, 'public');
 
-
             $pembayaran = Pembayaran::create([
-                'metode' => $pemesanan->metode,
+                'metode' => $validatedData['metode'], // Use the selected method from form
                 'jumlah' => $jumlah,
                 'tanggal' => now(),
                 'status' => 'waiting',
                 'bukti' => $path,
                 'id_pemesanan' => $validatedData['id_pemesanan'],
             ]);
-            DB::commit();
-            return redirect()->back()->with('success', 'Pembayaran berhasil dibuat');
-        }
-        catch (\Illuminate\Validation\ValidationException $e)
-        {
-            DB::rollBack();
-            return response()->json(['errors' => $e->validator->errors()], 422);
-        }
-        catch (\Exception $e)
-        {
-            DB::rollBack();
-            return response()->json(['message' => 'Gagal memperbarui status pembayaran', 'error' => $e->getMessage()], 500);
-        }
+            return redirect()->route("pelanggan.pemesanan.index")->with('success', 'Pembayaran berhasil dibuat');
     }
 
-    public function showPembayaranForm(string $pemesanan_id)
+    public function create(string $id_pemesanan)
     {
-        $pemesanan = Pemesanan::find($pemesanan_id);
+        $pemesanan = Pemesanan::find($id_pemesanan);
 
         // Handle jika pemesanan tidak ditemukan
         if (!$pemesanan) {
@@ -153,34 +106,8 @@ class PembayaranController extends Controller
             return redirect()->route('home');
         }
 
-        return view('pembayaran.bayar', [
+        return view('pelanggan.pembayaran.create', [
             'pemesanan' => $pemesanan
         ]);
-    }
-
-    public function updateStatus(Request $request, string $pembayaran_id)
-    {
-        try
-        {
-            DB::beginTransaction();
-            $pembayaran = Pembayaran::findOrFail($pembayaran_id);
-            $admin_id =  session(('admin_id'));
-            $validatedData = $request->validate([
-                'status' => 'required|in:accepted,rejected'
-            ]);
-            $pembayaran->update($validatedData + ['id_admin' => $admin_id]);
-            DB::commit();
-            return response()->json(['message' => 'Status pembayaran berhasil diperbarui', 'pembayaran' => $pembayaran], 200);
-        }
-        catch (\Illuminate\Validation\ValidationException $e)
-        {
-            DB::rollBack();
-            return response()->json(['errors' => $e->validator->errors()], 422);
-        }
-        catch (\Exception $e)
-        {
-            DB::rollBack();
-            return response()->json(['message' => 'Gagal memperbarui status pembayaran', 'error' => $e->getMessage()], 500);
-        }
     }
 }

@@ -46,6 +46,7 @@ class PembayaranResource extends Resource
                 View::make('admin.components.bukti-preview')
                     ->view('admin.components.bukti-preview')
                     ->columnSpanFull(),
+                    
                 Placeholder::make('View Pemesanan')
                     ->label('Pemesanan Details')
                     ->content(fn($record) => view('admin.components.pemesanan-link', ['record' => $record])),
