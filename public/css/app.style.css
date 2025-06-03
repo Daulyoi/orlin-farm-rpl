@@ -1392,6 +1392,38 @@ textarea {
     /* Add some space below the search bar */
 }
 
+.search-container img {
+    width: 20px;
+    height: 20px;
+    /* Adjust as needed */
+    cursor: pointer;
+    /* Makes the search icon clickable */
+}
+
+.search-container input {
+    flex: 1;
+    /* Makes the input take available space */
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: 1px solid var(--border-color-light);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-base);
+    background: var(--bg-card);
+    color: var(--text-primary);
+    transition: border-color 0.3s ease;
+}
+
+.search-container button {
+    background: var(--color-gray-200);
+    color: var(--text-white);
+    border: none;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-base);
+}
+
 .order-list table {
     width: 100%;
     border-collapse: collapse;
