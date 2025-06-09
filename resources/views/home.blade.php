@@ -12,9 +12,11 @@
                     Orlin Farm adalah platform terpercaya untuk jual beli hewan qurban secara online yang melayani wilayah Jabodetabek. Kami menyediakan hewan qurban berkualitas, layanan tabungan qurban, serta kemudahan transaksi digital. Dengan semangat transparansi dan amanah, Orlin Farm hadir untuk memudahkan ibadah qurban Anda secara praktis dan tepat sasaran.
                 </p>
                 <div class="hero__actions">
-                    <a href="{{ route('pelanggan.register.form') }}" class="btn btn--primary btn--large">
-                        Mulai Berbelanja
-                    </a>
+                    @if (!currentPelanggan())
+                        <a href="{{ route('pelanggan.register.form') }}" class="btn btn--primary btn--large">
+                            Mulai Berbelanja
+                        </a>
+                    @endif
                     <a href="#products" class="btn btn--secondary btn--large" id="lihatProdukBtn">
                         Lihat Produk
                     </a>
@@ -29,15 +31,15 @@
                 <form method="GET" action="{{ url()->current() }}" class="filter__form" id="filterForm">
                     <!-- Hidden field to store scroll position -->
                     <input type="hidden" name="scroll_pos" id="scroll_pos" value="{{ request(key: 'scroll_pos') }}">
-                    
+
                     <div class="filter__controls">
                         <!-- Search Input -->
                         <div class="filter__group--search">
-                            <input type="text" 
+                            <input type="text"
                                    id="search"
-                                   name="search" 
-                                   class="filter__select" 
-                                   placeholder="Cari jenis, lokasi, deskripsi" 
+                                   name="search"
+                                   class="filter__select"
+                                   placeholder="Cari jenis, lokasi, deskripsi"
                                    value="{{ request('search') }}"
                                    style="min-width: 250px;">
                         </div>
@@ -63,15 +65,15 @@
                         <!-- Sort Order -->
                         <div class="filter__sort">
                             <input type="hidden" name="sort_order" id="sort_order" value="{{ request('sort_order', 'desc') }}">
-                            <button type="button" 
-                                    id="sort-desc" 
-                                    class="filter__btn {{ request('sort_order') != 'asc' ? 'filter__btn--active' : '' }}" 
+                            <button type="button"
+                                    id="sort-desc"
+                                    class="filter__btn {{ request('sort_order') != 'asc' ? 'filter__btn--active' : '' }}"
                                     onclick="setSortOrder('desc')">
                                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor" class="btn--icon"><path d="M440-800v487L216-537l-56 57 320 320 320-320-56-57-224 224v-487h-80Z"/></svg>
                             </button>
-                            <button type="button" 
-                                    id="sort-asc" 
-                                    class="filter__btn {{ request('sort_order') == 'asc' ? 'filter__btn--active' : '' }}" 
+                            <button type="button"
+                                    id="sort-asc"
+                                    class="filter__btn {{ request('sort_order') == 'asc' ? 'filter__btn--active' : '' }}"
                                     onclick="setSortOrder('asc')">
                                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor" class="btn--icon"><path d="M440-160v-487L216-423l-56-57 320-320 320 320-56 57-224-224v487h-80Z"/></svg>
                             </button>
@@ -128,13 +130,13 @@ document.addEventListener('DOMContentLoaded', function() {
         const scrolled = window.pageYOffset;
         const parallaxY = scrolled * 1; // Background moves slower than scroll
         const scale = Math.max(0.2, .8 - (scrolled * 0.0003)); // Scale from 1 to 0.8
-        
+
         if (hero) {
             // Only animate the background via CSS custom properties
             hero.style.setProperty('--parallax-scale', scale);
             hero.style.setProperty('--parallax-y', `${parallaxY}px`);
         }
-        
+
         ticking = false;
     }
 
@@ -151,7 +153,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Check if this is a filter submission (has scroll_pos) vs normal page load
     const isFilterSubmission = {{ request('scroll_pos') ? 'true' : 'false' }};
     const isFromAnchorLink = window.location.hash === '#products';
-    
+
     // Store scroll position before form submit
     function storeScrollPosition() {
         const scrollPos = window.pageYOffset || document.documentElement.scrollTop;
@@ -177,21 +179,21 @@ document.addEventListener('DOMContentLoaded', function() {
     if (lihatProdukBtn) {
         lihatProdukBtn.addEventListener('click', function(e) {
             e.preventDefault();
-            
+
             // Clear scroll position when navigating normally
             const url = new URL(window.location);
             url.searchParams.delete('scroll_pos');
             url.hash = 'products';
-            
+
             // Update URL without reload
             window.history.pushState({}, '', url.toString());
-            
+
             // Smooth scroll to products section
             const productsSection = document.getElementById('products');
             if (productsSection) {
-                productsSection.scrollIntoView({ 
-                    behavior: 'smooth', 
-                    block: 'start' 
+                productsSection.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
                 });
             }
         });
@@ -209,7 +211,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Search with debounce
     const searchInput = document.querySelector('input[name="search"]');
     let searchTimeout;
-    
+
     if (searchInput) {
         searchInput.addEventListener('input', function() {
             clearTimeout(searchTimeout);
@@ -252,9 +254,9 @@ document.addEventListener('DOMContentLoaded', function() {
             setTimeout(() => {
                 const productsSection = document.getElementById('products');
                 if (productsSection) {
-                    productsSection.scrollIntoView({ 
-                        behavior: 'smooth', 
-                        block: 'start' 
+                    productsSection.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
                     });
                 }
             }, 100);
@@ -269,11 +271,11 @@ function setSortOrder(order) {
     const scrollPos = window.pageYOffset || document.documentElement.scrollTop;
     document.getElementById('scroll_pos').value = scrollPos;
     document.getElementById('sort_order').value = order;
-    
+
     // Update button states
     const descBtn = document.getElementById('sort-desc');
     const ascBtn = document.getElementById('sort-asc');
-    
+
     if (order === 'desc') {
         descBtn.classList.add('filter__btn--active');
         ascBtn.classList.remove('filter__btn--active');
@@ -281,7 +283,7 @@ function setSortOrder(order) {
         ascBtn.classList.add('filter__btn--active');
         descBtn.classList.remove('filter__btn--active');
     }
-    
+
     // Submit form
     document.querySelector('form').submit();
 }
