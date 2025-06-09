@@ -3,25 +3,25 @@
 
 @section('content')
     <div class="main-container">
-        <aside class="panel" style="max-width: 20%;">
+        {{-- <aside class="panel" style="max-width: 20%;">
             <a class="btn btn--secondary sidebar__btn" href="{{ route('pelanggan.profile') }}">Profil</a>
             <a class="btn btn--primary sidebar__btn" href="{{ route('pelanggan.pemesanan.index') }}">Riwayat Pemesanan</a>
-        </aside>
+        </aside> --}}
 
         <!-- Riwayat Pemesanan Section -->
         <section class="panel">
             <h1>Riwayat Pemesanan</h1>
             <form method="GET" action="{{ route('pelanggan.pemesanan.index') }}" class="search-form" id="searchForm">
                 <div class="form__input-group">
-                    <input type="text" 
-                           name="search" 
-                           placeholder="Cari detail pemesanan, tanggal, atau status" 
+                    <input type="text"
+                           name="search"
+                           placeholder="Cari detail pemesanan, tanggal, atau status"
                            class="form__input"
                            value="{{ request('search') }}">
                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor" class="form__icon"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>
                 </div>
             </form>
-            <div class="order-list"> 
+            <div class="order-list">
                 <table>
                     <thead>
                         <tr>
@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Search with debounce
     const searchInput = document.querySelector('input[name="search"]');
     let searchTimeout;
-    
+
     if (searchInput) {
         searchInput.addEventListener('input', function() {
             clearTimeout(searchTimeout);
