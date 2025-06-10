@@ -100,7 +100,7 @@ class PembayaranController extends Controller
         if (!$pemesanan) {
             return redirect()->route('home');
         }
-        
+
         // Pastikan hanya pelanggan yang sesuai yang bisa mengakses
         if ($pemesanan->id_pelanggan !== currentPelanggan()->id) {
             return redirect()->route('home');
