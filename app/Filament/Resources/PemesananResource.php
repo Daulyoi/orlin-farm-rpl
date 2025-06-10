@@ -20,7 +20,7 @@ class PemesananResource extends Resource
     protected static ?string $model = Pemesanan::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    
+
 
     public static function form(Form $form): Form
     {
@@ -62,7 +62,7 @@ class PemesananResource extends Resource
                 TextColumn::make('jumlah')
                     ->label('Jumlah')
                     ->sortable(),
-                
+
                 TextColumn::make('status')
                     ->label('Status')
                     ->sortable(),

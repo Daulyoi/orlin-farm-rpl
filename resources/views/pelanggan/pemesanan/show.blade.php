@@ -3,10 +3,10 @@
 
 @section('content')
     <div class="main-container">
-        <aside class="panel" style="max-width: 20%;">
+        {{-- <aside class="panel" style="max-width: 20%;">
             <a class="btn btn--secondary sidebar__btn" href="{{ route('pelanggan.profile') }}">Profil</a>
             <a class="btn btn--primary sidebar__btn" href="{{ route('pelanggan.pemesanan.index') }}">Riwayat Pemesanan</a>
-        </aside>
+        </aside> --}}
 
         <!-- Detail Pemesanan Section -->
         <section class="panel">
@@ -112,7 +112,7 @@
                                 @if($item->hewanQurban)
                                 <tr>
                                     <td>
-                                        <img src="{{ asset($item->hewanQurban->foto) }}" 
+                                        <img src="{{ asset($item->hewanQurban->foto) }}"
                                              alt="{{ $item->hewanQurban->jenis }}"
                                              style="width: 60px; height: 60px; object-fit: cover; border-radius: var(--radius-md);">
                                     </td>
@@ -150,7 +150,7 @@
                 @if($pemesanan->status == 'pending' && $pemesanan->pembayaran == null)
                 <div style="margin-top: var(--spacing-lg); padding-top: var(--spacing-lg); border-top: 1px solid var(--border-color);">
                     <div style="display: flex; gap: var(--spacing-md); flex-wrap: wrap;">
-                        <form action="{{ route('pelanggan.pemesanan.cancel', $pemesanan->id) }}" method="POST" 
+                        <form action="{{ route('pelanggan.pemesanan.cancel', $pemesanan->id) }}" method="POST"
                               onsubmit="return confirm('Apakah Anda yakin ingin membatalkan pesanan ini?')">
                             @csrf
                             @method('PUT')
